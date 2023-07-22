@@ -4,15 +4,16 @@ const placesRoutes = require('./routes/places-routes');
 const PORT = 5000;
 
 const app = express();
+
+app.use(express.json());
 app.use('/api/places', placesRoutes);
 
-// Default error handler
 app.use((error, req, res, next) => {
-    if (res?.headersSent) return next(error);
+    if (res.headersSent) return next(error);
 
-    res?.status(error?.code || 500);
-    res?.json({
-        message: error?.message || 'An unknown error occurred.'
+    res.status(error.code || 500);
+    res.json({
+        message: error.message || 'An unknown error occurred.'
     });
 });
 
