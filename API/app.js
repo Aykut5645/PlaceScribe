@@ -1,5 +1,7 @@
 const express = require('express');
+
 const placesRoutes = require('./routes/places-routes');
+const HttpError = require('./models/http-error');
 
 const PORT = 5000;
 
@@ -8,6 +10,10 @@ const app = express();
 app.use(express.json());
 app.use('/api/places', placesRoutes);
 
+app.use((req, res) => {
+    // Error can be thrown in case of synchronous code, upon asynchronous - next()!!!
+    throw new HttpError('Could not find this route', 404);
+});
 app.use((error, req, res, next) => {
     if (res.headersSent) return next(error);
 
@@ -17,4 +23,4 @@ app.use((error, req, res, next) => {
     });
 });
 
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}...`));
+app.listen(PORT, () => console.log(`Server is listening on port ${PORT}...`));
