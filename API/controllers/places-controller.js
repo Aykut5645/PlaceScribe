@@ -27,7 +27,7 @@ const getPlaceById = (req, res, next) => {
     res.json({ place: currentPlace });
 };
 
-const getPlaceByUserId = (req, res, next) => {
+const getPlacesByUserId = (req, res, next) => {
     const userId = req.params.uid;
     const currentPlaces = DUMMY_PLACES.filter(place => place.creator === userId);
 
@@ -79,7 +79,7 @@ const deletePlace = (req, res, next) => {
 
 module.exports = {
     getPlaceById,
-    getPlaceByUserId,
+    getPlacesByUserId,
     createPlace,
     updatePlace,
     deletePlace,
