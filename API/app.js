@@ -1,4 +1,6 @@
 const express = require('express');
+const { connect } = require("mongoose");
+require('dotenv').config();
 
 const usersRoutes = require('./routes/users-routes');
 const placesRoutes = require('./routes/places-routes');
@@ -26,4 +28,11 @@ app.use((error, req, res, next) => {
     });
 });
 
-app.listen(PORT, () => console.log(`Server is listening on port ${PORT}...`));
+connect(process.env.MONGO_CONNECTION_STRING)
+    .then(() => {
+        app.listen(
+            PORT,
+            () => console.log(`Server is listening on port ${PORT}...`)
+        );
+    })
+    .catch((err) => console.log('Database connection error => ', err));
