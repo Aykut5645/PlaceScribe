@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const usersRoutes = require('./routes/users-routes');
 const placesRoutes = require('./routes/places-routes');
-const HttpError = require('./models/http-error');
+const HttpError = require('./models/Http-error');
 
 const PORT = 5000;
 
