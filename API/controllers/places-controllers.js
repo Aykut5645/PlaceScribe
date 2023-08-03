@@ -1,4 +1,3 @@
-const uuid = require('uuid').v4;
 const { startSession } = require("mongoose");
 const { validationResult } = require('express-validator');
 
@@ -6,18 +5,6 @@ const Place = require('../models/Place');
 const User = require('../models/User');
 const HttpError = require('../models/Http-error');
 const getCoordsForAddress = require("../util/location");
-
-let DUMMY_PLACES = [{
-    id: 'p1',
-    title: 'Empire State Building',
-    description: 'One of the famous sky scrapers in the world',
-    location: {
-        lat: 40.7484474,
-        lng: -73.9882393,
-    },
-    address: '20 W 34th St., New York, NY 10001, United States',
-    creator: 'u1',
-}];
 
 const getPlaceById = async (req, res, next) => {
     const placeId = req.params.pid;
@@ -47,6 +34,7 @@ const getPlacesByUserId = async (req, res, next) => {
 
     try {
         currentPlaces = await Place.find({ creator: userId });
+        // userWithPlaces = await User.findById(userId).populate('places');
     } catch (err) {
         return next(
             new HttpError('Fetching places failed. Please try again later.', 500)
@@ -61,6 +49,7 @@ const getPlacesByUserId = async (req, res, next) => {
             )
         );
     }
+
     res.json({ places: currentPlaces.map(place => place.toObject({ getters: true })) });
 };
 
