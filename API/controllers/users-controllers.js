@@ -1,7 +1,7 @@
 const uuid = require('uuid').v4;
 const { validationResult } = require('express-validator');
 
-
+const User = require('../models/User');
 const HttpError = require('../models/Http-error');
 
 const DUMMY_USERS = [
@@ -17,32 +17,47 @@ const getUsers = (req, res, next) => {
     res.json({ users: DUMMY_USERS });
 };
 
-const signup = (req, res, next) => {
+const signup = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return next(
             new HttpError('Invalid inputs passed, please check your data.', 422)
         );
     }
-    const { name, email, password } = req.body;
-    const hasUser = DUMMY_USERS.find(user => user.email === email);
+    const { name, email, password, places } = req.body;
+    let existingUser;
 
-    if (hasUser) {
+    try {
+        existingUser = await User.findOne({ email });
+    } catch(err) {
+        return next(
+            new HttpError('Signing up failed, please try again later.', 500)
+        );
+    }
+
+    if (existingUser) {
         return next(
             new HttpError('Could not create user, email already exists.', 422)
         );
     }
 
-    const createdUser = {
-        id: uuid(),
+    const createdUser = new User({
         name,
         email,
-        password
-    };
+        password,
+        imageUrl: 'https://yt3.googleusercontent.com/-CFTJHU7fEWb7BYEb6Jh9gm1EpetvVGQqtof0Rbh-VQRIznYYKJxCaqv_9HeBcmJmIsp2vOO9JU=s900-c-k-c0x00ffffff-no-rj',
+        places,
+    });
 
-    DUMMY_USERS.push(createdUser);
+    try {
+        await createdUser.save();
+    } catch (err) {
+        return next(
+            new HttpError('Signing up failed. Please try again later.', 500)
+        );
+    }
 
-    res.status(201).json({ user: createdUser });
+    res.status(201).json({ user: createdUser.toObject({ getters: true }) });
 };
 
 const login = (req, res, next) => {
