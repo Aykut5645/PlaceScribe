@@ -157,15 +157,26 @@ const deletePlace = async (req, res, next) => {
     let existingPlace;
 
     try {
-        existingPlace = await Place.findById(placeId);
+        existingPlace = await Place.findById(placeId).populate('creator');
     } catch (err) {
         return next(
             new HttpError('Something went wrong. Could not delete a place.', 500)
         );
     }
 
+    if (!existingPlace) {
+        return next(
+            new HttpError('Could not find place for this id.', 404)
+        );
+    }
+
     try {
-        await existingPlace.deleteOne();
+        const session = await startSession();
+        await session.withTransaction(async () => {
+            await existingPlace.deleteOne();
+            existingPlace.creator.places.pull(existingPlace);
+            await existingPlace.creator.save();
+        });
     } catch (err) {
         return next(
             new HttpError('Something went wrong. Could not delete a place.', 500)
