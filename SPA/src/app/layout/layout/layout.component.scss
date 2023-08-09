@@ -1,0 +1,97 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3rem 6rem;
+}
+
+.header__logo {
+    position: relative;
+    overflow: hidden;
+    line-height: 6.4rem;
+    transition: all 0.3s;
+
+    & a {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    & img {
+        width: 3.2rem;
+        vertical-align: middle;
+        display: block;
+    }
+
+    & h1 {
+        font-family:
+            Gills Sans MT,
+            sans-serif;
+        font-size: 2.2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        display: inline-block;
+        color: #f8fbff;
+        font-weight: 600;
+        vertical-align: middle;
+        margin: 0;
+
+        & span {
+            color: #f1cb30;
+            font-weight: normal;
+            margin-left: 2px;
+        }
+    }
+}
+
+.main-nav {
+    display: flex;
+    list-style: none;
+    gap: 6rem;
+    margin: 0;
+    padding: 0;
+
+    &__item > a {
+        color: white;
+        position: relative;
+
+        &:hover::before {
+            content: '';
+            position: absolute;
+            width: 1.6rem;
+            height: 2px;
+            background-color: white;
+            bottom: -2px;
+        }
+    }
+}
+
+.button-group {
+    height: 4rem;
+    display: flex;
+    gap: 0.8rem;
+
+    &__button {
+        height: 100%;
+        padding: 0 3rem;
+        border-radius: 2rem;
+        transition: transform 0.2s;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+
+        &--register {
+            color: #589dc9;
+        }
+
+        &--login {
+            border: 2px solid white;
+
+            &:hover,
+            &:focus {
+                background: none;
+            }
+        }
+    }
+}

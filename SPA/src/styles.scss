@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%; // 1rem = 10px; 10px/16px = 62.5%
+}
+
+.container-primary {
+    min-height: 100vh;
+    background-color: #4444;
+}
