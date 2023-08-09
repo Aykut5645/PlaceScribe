@@ -2,14 +2,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 3rem 6rem;
+    padding: 5rem;
 }
 
 .header__logo {
     position: relative;
     overflow: hidden;
-    line-height: 6.4rem;
+    line-height: 2.4rem;
     transition: all 0.3s;
+
+    &:hover {
+        transform: scale(1.08);
+    }
 
     & a {
         display: flex;
@@ -24,9 +28,6 @@
     }
 
     & h1 {
-        font-family:
-            Gills Sans MT,
-            sans-serif;
         font-size: 2.2rem;
         text-transform: uppercase;
         letter-spacing: 2px;
@@ -52,46 +53,32 @@
     padding: 0;
 
     &__item > a {
-        color: white;
         position: relative;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: white;
 
-        &:hover::before {
-            content: '';
-            position: absolute;
-            width: 1.6rem;
-            height: 2px;
-            background-color: white;
-            bottom: -2px;
-        }
-    }
-}
+        &:hover,
+        &.active {
+            color: #f1cb30;
 
-.button-group {
-    height: 4rem;
-    display: flex;
-    gap: 0.8rem;
-
-    &__button {
-        height: 100%;
-        padding: 0 3rem;
-        border-radius: 2rem;
-        transition: transform 0.2s;
-
-        &:hover {
-            transform: scale(1.05);
-        }
-
-        &--register {
-            color: #589dc9;
-        }
-
-        &--login {
-            border: 2px solid white;
-
-            &:hover,
-            &:focus {
-                background: none;
+            &::before {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 2px;
+                background-color: #f1cb30;
+                bottom: -4px;
+                transform: scaleX(0); /* Initial scale to hide the line */
+                transform-origin: left center;
+                transition: transform 0.3s;
             }
+        }
+
+        &.active::before {
+            transform: scaleX(1); /* Show the line on active state */
         }
     }
 }

@@ -1,8 +1,7 @@
 <div class="container-primary">
     <header class="header">
         <div class="header__logo">
-            <a routerLink="">
-<!--                <img class="img" ngSrc='../../../assets/icons/g14.svg' alt="logo" />-->
+            <a routerLink="/">
                 <h1>Place<span>Scribe</span></h1>
             </a>
         </div>
@@ -10,30 +9,16 @@
         <nav>
             <ul class="main-nav">
                 <li class="main-nav__item">
-                    <a routerLink="">За нас</a>
+                    <a routerLink="/users" routerLinkActive="active">All Users</a>
                 </li>
                 <li class="main-nav__item">
-                    <a routerLink="">Контакти</a>
+                    <a routerLink="/auth/login" routerLinkActive="active">Login</a>
                 </li>
                 <li class="main-nav__item">
-                    <a routerLink="">Цени</a>
+                    <a routerLink="/auth/register" routerLinkActive="active">Register</a>
                 </li>
             </ul>
         </nav>
-
-        <div class="button-group">
-            <button class="button-group__button button-group__button--register" nz-button routerLink="/auth/register">
-                Създай акаунт
-            </button>
-            <button
-                class="button-group__button button-group__button--login"
-                nz-button
-                nzType="primary"
-                routerLink="/auth/login"
-            >
-                Влез
-            </button>
-        </div>
     </header>
 
     <router-outlet></router-outlet>
