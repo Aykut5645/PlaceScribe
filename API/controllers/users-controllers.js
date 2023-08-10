@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator');
+const { hash, compare } = require('bcryptjs');
 
 const User = require('../models/User');
 const HttpError = require('../models/Http-error');
@@ -41,10 +42,19 @@ const signup = async (req, res, next) => {
         );
     }
 
+    let hashedPassword;
+    try {
+        hashedPassword = await hash(password, 12);
+    } catch(err) {
+        return next(
+            new HttpError('Could not create user, please try again again.', 500)
+        );
+    }
+
     const createdUser = new User({
         name,
         email,
-        password,
+        password: hashedPassword,
         imageUrl: 'https://yt3.googleusercontent.com/-CFTJHU7fEWb7BYEb6Jh9gm1EpetvVGQqtof0Rbh-VQRIznYYKJxCaqv_9HeBcmJmIsp2vOO9JU=s900-c-k-c0x00ffffff-no-rj',
         places: [],
     });
@@ -68,11 +78,26 @@ const login = async (req, res, next) => {
         existingUser = await User.findOne({ email });
     } catch(err) {
         return next(
-            new HttpError('Logging in failed, please try again later.', 500)
+            new HttpError('Invalid credentials, could not log you in.', 500)
         );
     }
 
-    if (existingUser?.password !== password) {
+    if (!existingUser) {
+        return next(
+            new HttpError('Could not identify user, credentials seem to be wrong.', 401)
+        );
+    }
+
+    let isValidPassword = false;
+    try {
+        isValidPassword = await compare(password, existingUser.password);
+    } catch(err) {
+        return next(
+            new HttpError('Could not log you in, credentials seem to be wrong, please try again.', 500)
+        );
+    }
+
+    if (!isValidPassword) {
         return next(
             new HttpError('Could not identify user, credentials seem to be wrong.', 401)
         );
