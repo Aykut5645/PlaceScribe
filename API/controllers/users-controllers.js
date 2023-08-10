@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 const { hash, compare } = require('bcryptjs');
+const { sign} = require('jsonwebtoken');
 
 const User = require('../models/User');
 const HttpError = require('../models/Http-error');
@@ -67,7 +68,19 @@ const signup = async (req, res, next) => {
         );
     }
 
-    res.status(201).json({ user: createdUser.toObject({ getters: true }) });
+    let token;
+    try {
+        let token= sign({
+            usedId: createdUser.id,
+            email: createdUser.email,
+        }, process.env.JWT_PRIVATE_KEY, { expiresIn: '1h' });
+    } catch(err) {
+        return next(
+            new HttpError('Signing up failed. Please try again later.', 500)
+        );
+    }
+
+    res.status(201).json({ userId: createdUser.id, email: createdUser.email, token });
 };
 
 const login = async (req, res, next) => {
@@ -103,7 +116,19 @@ const login = async (req, res, next) => {
         );
     }
 
-    res.json({ message: 'Logged in!' });
+    let token;
+    try {
+        let token= sign({
+            usedId: existingUser.id,
+            email: existingUser.email,
+        }, process.env.JWT_PRIVATE_KEY, { expiresIn: '1h' });
+    } catch(err) {
+        return next(
+            new HttpError('Signing in failed. Please try again later.', 500)
+        );
+    }
+
+    res.json({ userId: existingUser.id, email: existingUser.email, token });
 };
 
 module.exports = {
