@@ -1,11 +1,10 @@
 .container-auth {
-    width: 50%;
+    max-width: 50rem;
     background: transparent;
     border: 2px solid #589dc9;
     border-radius: 1rem;
     margin: auto;
     padding: 6rem;
-    text-align: center;
 }
 
 .heading {
@@ -13,4 +12,5 @@
     letter-spacing: -0.82px;
     color: white;
     margin-bottom: 3.5rem;
+    text-align: center;
 }

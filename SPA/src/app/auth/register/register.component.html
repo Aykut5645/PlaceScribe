@@ -1,1 +1,36 @@
-<p>register works!</p>
+<app-auth-layout heading="Register" mark="">
+    <form [formGroup]="registerForm" (ngSubmit)="submitHandler()">
+        <div class="input-container">
+            <label>Email:</label>
+            <input nz-input placeholder="email" formControlName="email" />
+        </div>
+
+        <div class="input-container">
+            <label>Password:</label>
+            <input nz-input placeholder="**********" formControlName="password" [type]="passwordInputType" />
+            <i
+                nz-icon
+                nzTheme="outline"
+                class="suffix-icon"
+                [nzType]="passwordInputType === 'text' ? 'eye-invisible' : 'eye'"
+                (click)="changePasswordInputType(passwordInputType === 'text' ? 'password' : 'text')"
+            ></i>
+        </div>
+
+        <div class="input-container">
+            <label>Confirm Password:</label>
+            <input nz-input placeholder="**********" formControlName="confirmPassword" [type]="passwordInputType" />
+            <i
+                nz-icon
+                nzTheme="outline"
+                class="suffix-icon"
+                [nzType]="passwordInputType === 'text' ? 'eye-invisible' : 'eye'"
+                (click)="changePasswordInputType(passwordInputType === 'text' ? 'password' : 'text')"
+            ></i>
+        </div>
+
+        <button class="btn" nz-button nzType="primary" type="submit" [disabled]="registerForm.invalid">
+            Sign up
+        </button>
+    </form>
+</app-auth-layout>

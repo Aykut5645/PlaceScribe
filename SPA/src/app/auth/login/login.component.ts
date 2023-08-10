@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
     }
 
     submitHandler(): void {
-        console.log('Login submitted');
+        console.log('Login => ', this.loginForm.value);
     }
 
     private createForm(): void {
