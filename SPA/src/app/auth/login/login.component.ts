@@ -24,10 +24,18 @@ export class LoginComponent implements OnInit {
         console.log('Login => ', this.loginForm.value);
     }
 
+    get emailIsValid() {
+        return this.loginForm.get('email')?.invalid && this.loginForm.get('email')?.touched;
+    }
+
+    get passwordIsValid() {
+        return this.loginForm.get('password')?.invalid && this.loginForm.get('password')?.touched;
+    }
+
     private createForm(): void {
         this.loginForm = this.fb.group({
-            email: [null, [Validators.required]],
-            password: [null, [Validators.required]],
+            email: [null, [Validators.required, Validators.email]],
+            password: [null, [Validators.required, Validators.minLength(6)]],
         });
     }
 }

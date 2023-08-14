@@ -3,6 +3,8 @@
         <div class="input-container">
             <label>Email:</label>
             <input nz-input placeholder="email" formControlName="email" />
+
+            <div *ngIf="emailIsValid" style="color: orangered">Please enter a valid email.</div>
         </div>
 
         <div class="input-container">
@@ -15,10 +17,11 @@
                 [nzType]="passwordInputType === 'text' ? 'eye-invisible' : 'eye'"
                 (click)="changePasswordInputType(passwordInputType === 'text' ? 'password' : 'text')"
             ></i>
+
+            <div *ngIf="passwordIsValid" style="color: orangered">Password must be at least 6 characters long.</div>
         </div>
 
         <button class="btn" nz-button nzType="primary" type="submit" [disabled]="loginForm.invalid">
-            <!--        {{ !(isLoadingButton$ | async) ? 'Влез' : 'Влизане...' }}-->
             Sign In
         </button>
     </form>
