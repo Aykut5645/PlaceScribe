@@ -3,6 +3,8 @@
         <div class="input-container">
             <label>Email:</label>
             <input nz-input placeholder="email" formControlName="email" />
+
+            <div *ngIf="emailIsValid" style="color: orangered">Please enter a valid email.</div>
         </div>
 
         <div class="input-container">
@@ -15,6 +17,8 @@
                 [nzType]="passwordInputType === 'text' ? 'eye-invisible' : 'eye'"
                 (click)="changePasswordInputType(passwordInputType === 'text' ? 'password' : 'text')"
             ></i>
+
+            <div *ngIf="passwordIsValid" style="color: orangered">Please enter a valid password.</div>
         </div>
 
         <div class="input-container">
@@ -27,9 +31,11 @@
                 [nzType]="passwordInputType === 'text' ? 'eye-invisible' : 'eye'"
                 (click)="changePasswordInputType(passwordInputType === 'text' ? 'password' : 'text')"
             ></i>
+
+            <div *ngIf="isMatch" style="color: orangered">Passwords does not match.</div>
         </div>
 
-        <button class="btn" nz-button nzType="primary" type="submit" [disabled]="registerForm.invalid">
+        <button class="btn" nz-button nzType="primary" type="submit" [disabled]="registerForm.invalid || isMatch">
             Sign up
         </button>
     </form>
