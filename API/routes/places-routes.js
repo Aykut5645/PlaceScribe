@@ -2,12 +2,13 @@ const router = require('express').Router();
 const { check } = require('express-validator');
 
 const placesControllers = require('../controllers/places-controllers');
+const checkAuth = require('../middleware/check-auth');
 
 router.get('/:pid', placesControllers.getPlaceById);
 
 router.get('/user/:uid', placesControllers.getPlacesByUserId);
 
-router.use();
+router.use(checkAuth);
 
 router.post(
     '/',
