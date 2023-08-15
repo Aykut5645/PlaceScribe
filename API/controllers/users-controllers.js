@@ -70,7 +70,7 @@ const signup = async (req, res, next) => {
 
     let token;
     try {
-        let token= sign({
+        token = sign({
             usedId: createdUser.id,
             email: createdUser.email,
         }, process.env.JWT_PRIVATE_KEY, { expiresIn: '1h' });
@@ -118,7 +118,7 @@ const login = async (req, res, next) => {
 
     let token;
     try {
-        let token= sign({
+        token = sign({
             usedId: existingUser.id,
             email: existingUser.email,
         }, process.env.JWT_PRIVATE_KEY, { expiresIn: '1h' });

@@ -21,7 +21,19 @@ export class LoginComponent implements OnInit {
     }
 
     submitHandler(): void {
-        console.log('Login => ', this.loginForm.value);
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: this.loginForm.value.email,
+                password: this.loginForm.value.password,
+            }),
+        };
+        fetch('http://localhost:5000/api/users/login', requestOptions)
+            .then((response) => response)
+            .then((data) => console.log(data)).catch(err => console.log(err));
     }
 
     get emailIsValid() {

@@ -1,6 +1,13 @@
 <app-auth-layout heading="Register" mark="">
     <form [formGroup]="registerForm" (ngSubmit)="submitHandler()">
         <div class="input-container">
+            <label>Name:</label>
+            <input nz-input placeholder="name" formControlName="name" />
+
+            <div *ngIf="nameIsValid" style="color: orangered">Please enter a name.</div>
+        </div>
+
+        <div class="input-container">
             <label>Email:</label>
             <input nz-input placeholder="email" formControlName="email" />
 

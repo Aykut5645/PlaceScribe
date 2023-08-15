@@ -21,6 +21,10 @@ export class RegisterComponent implements OnInit {
         this.passwordInputType = type;
     }
 
+    get nameIsValid(): boolean {
+        return Boolean(this.registerForm.get('name')?.invalid && this.registerForm.get('name')?.touched);
+    }
+
     get emailIsValid(): boolean {
         return Boolean(this.registerForm.get('email')?.invalid && this.registerForm.get('email')?.touched);
     }
@@ -32,17 +36,38 @@ export class RegisterComponent implements OnInit {
     get isMatch(): boolean {
         return Boolean(
             this.registerForm.get('password')?.valid &&
-            this.registerForm.get('confirmPassword')?.valid &&
-            this.registerForm.get('password')?.value !== this.registerForm.get('confirmPassword')?.value
+                this.registerForm.get('confirmPassword')?.valid &&
+                this.registerForm.get('password')?.value !== this.registerForm.get('confirmPassword')?.value,
         );
     }
 
     submitHandler(): void {
-        console.log('Register => ', this.registerForm.value);
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: this.registerForm.value.name,
+                email: this.registerForm.value.email,
+                password: this.registerForm.value.password,
+            }),
+        };
+        fetch('http://localhost:5000/api/users/signup', requestOptions)
+            .then((response) => response)
+            .then((data) => console.log(data)).catch(err => console.log(err));
+        // console.log(
+        //     'Register => ',
+        //     this.registerForm.value.name,
+        //     this.registerForm.value.email,
+        //     this.registerForm.value.password,
+        //     this.registerForm.value.confirmPassword,
+        // );
     }
 
     private createForm(): void {
         this.registerForm = this.fb.group({
+            name: [null, [Validators.required]],
             email: [null, [Validators.required, Validators.email]],
             password: [null, [Validators.required, Validators.minLength(6)]],
             confirmPassword: [null, [Validators.required]],
