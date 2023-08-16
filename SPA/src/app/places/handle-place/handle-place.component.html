@@ -1,0 +1,26 @@
+<form [formGroup]="placeForm" (ngSubmit)="submitHandler()">
+    <div class="input-container">
+        <label>Title:</label>
+        <input nz-input placeholder="Title" formControlName="title" />
+
+        <div *ngIf="titleIsValid" style="color: orangered">Please enter a title.</div>
+    </div>
+
+    <div class="input-container">
+        <label>Description:</label>
+        <textarea rows="4" nz-input placeholder="Description" formControlName="description"></textarea>
+
+        <div *ngIf="descriptionIsValid" style="color: orangered">Description must be at least 6 characters long.</div>
+    </div>
+
+    <div class="input-container">
+        <label>Address:</label>
+        <input nz-input placeholder="Address" formControlName="address" />
+
+        <div *ngIf="addressIsValid" style="color: orangered">Please enter an address.</div>
+    </div>
+
+    <button class="btn" nz-button nzType="primary" type="submit" [disabled]="placeForm.invalid">
+        {{ isEditMode ? 'Edit' : 'Create' }}
+    </button>
+</form>
