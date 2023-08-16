@@ -19,9 +19,9 @@ export class AuthEffects {
         return this.action$.pipe(
             ofType(AuthApiActions.login),
             switchMap((_) => {
-                return this.authService.login(_).pipe(
-                    map((userLoginResponse: any) => {
-                        return AuthUiActions.loginSuccess({ message: 'ok' });
+                return this.authService.login({ email: _.email, password: _.password }).pipe(
+                    map((userData) => {
+                        return AuthUiActions.loginSuccess(userData);
                     }),
                     catchError((error) => {
                         return of(

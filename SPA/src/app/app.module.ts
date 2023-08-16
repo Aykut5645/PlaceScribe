@@ -12,9 +12,10 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 
+import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { environment } from '../environments/environment';
+import { applicationReducers } from './+state/app.reducer';
 
 registerLocaleData(en);
 
@@ -26,7 +27,7 @@ registerLocaleData(en);
         FormsModule,
         HttpClientModule,
         BrowserAnimationsModule,
-        StoreModule.forRoot({}, {}),
+        StoreModule.forRoot({ app: applicationReducers }),
         EffectsModule.forRoot([]),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     ],

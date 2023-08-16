@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+
+import { AuthApiActions } from '../+state/actions';
 
 @Component({
     selector: 'app-login',
@@ -10,7 +13,7 @@ export class LoginComponent implements OnInit {
     loginForm!: FormGroup;
     passwordInputType = 'password';
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: FormBuilder, private store: Store) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -21,19 +24,7 @@ export class LoginComponent implements OnInit {
     }
 
     submitHandler(): void {
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: this.loginForm.value.email,
-                password: this.loginForm.value.password,
-            }),
-        };
-        fetch('http://localhost:5000/api/users/login', requestOptions)
-            .then((response) => response)
-            .then((data) => console.log(data)).catch(err => console.log(err));
+        this.store.dispatch(AuthApiActions.login(this.loginForm.value));
     }
 
     get emailIsValid() {

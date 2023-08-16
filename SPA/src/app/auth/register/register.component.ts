@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { AuthApiActions } from '../+state/actions';
 
 @Component({
     selector: 'app-register',
@@ -8,10 +10,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class RegisterComponent implements OnInit {
     registerForm!: FormGroup;
-
     passwordInputType = 'password';
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: FormBuilder, private store: Store) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -42,27 +43,7 @@ export class RegisterComponent implements OnInit {
     }
 
     submitHandler(): void {
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: this.registerForm.value.name,
-                email: this.registerForm.value.email,
-                password: this.registerForm.value.password,
-            }),
-        };
-        fetch('http://localhost:5000/api/users/signup', requestOptions)
-            .then((response) => response)
-            .then((data) => console.log(data)).catch(err => console.log(err));
-        // console.log(
-        //     'Register => ',
-        //     this.registerForm.value.name,
-        //     this.registerForm.value.email,
-        //     this.registerForm.value.password,
-        //     this.registerForm.value.confirmPassword,
-        // );
+        this.store.dispatch(AuthApiActions.register(this.registerForm.value));
     }
 
     private createForm(): void {
