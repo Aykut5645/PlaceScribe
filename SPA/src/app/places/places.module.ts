@@ -1,14 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { PlacesRoutingModule } from './places-routing.module';
 import { PlacesComponent } from './places/places.component';
 import { HandlePlaceComponent } from './handle-place/handle-place.component';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { ReactiveFormsModule } from '@angular/forms';
 import { PlaceDetailsComponent } from './place-details/place-details.component';
+import { PlaceEffects } from './+state/effects/place.effects';
+import { placeReducers } from './+state/reducers/place.reducers';
 
 @NgModule({
     declarations: [PlacesComponent, HandlePlaceComponent, PlaceDetailsComponent],
@@ -19,6 +23,8 @@ import { PlaceDetailsComponent } from './place-details/place-details.component';
         NzIconModule,
         NzInputModule,
         ReactiveFormsModule,
+        StoreModule.forFeature('places', placeReducers),
+        EffectsModule.forFeature([PlaceEffects]),
     ],
 })
 export class PlacesModule {}

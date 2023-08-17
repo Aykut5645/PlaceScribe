@@ -1,15 +1,15 @@
 import { createAction, props } from '@ngrx/store';
 import { HttpErrorResponse } from '@angular/common/http';
 
-export const loadPlaceByUserIdSuccess = createAction('[Place UI] Load place by user ID success', props<any>());
+export const loadPlacesByUserIdSuccess = createAction('[Place UI] Load places by user ID success', props<any>());
 
-export const loadPlaceByUserIdFail = createAction('[Place UI] Load place by user ID fail', props<any>());
+export const loadPlacesByUserIdFail = createAction('[Place UI] Load places by user ID fail', props<any>());
 
 export const loadPlaceDetailsSuccess = createAction('[Place UI] Load place details success', props<any>());
 
 export const loadPlaceDetailsFail = createAction('[Place UI] Load place details error', props<any>());
 
-export const createPlaceSuccess = createAction('[Place UI] Create place success', props<any>());
+export const createPlaceSuccess = createAction('[Place UI] Create place success', props<{ message: string }>());
 
 export const createPlaceFail = createAction('[Place UI] Create place fail', props<any>());
 

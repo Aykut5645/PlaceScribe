@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -19,7 +19,11 @@ export class PlaceService {
     }
 
     createPlace(place: any): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}`, place);
+        console.log('DATA IN SERVICE => ', place);
+        const headers = new HttpHeaders().set('Authorization',
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VkSWQiOiI2NGRkMGJmOGJlYTUxNzM3NGFkNThkYmMiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2OTIyNzY2NzksImV4cCI6MTY5MjI4MDI3OX0.d0siXWpZhUebdUEVHNGE9B1v5jkJFySxyOPhlWLdssE');
+        console.log(headers);
+        return this.http.post<any>(`${this.baseUrl}`, place, { headers });
     }
 
     updatePlace(placeId: any, place: any): Observable<any> {
