@@ -37,7 +37,6 @@ export const placeDetailsReducer = createReducer<State.PlaceDetailsState>(
         };
     }),
     on(PlaceUiActions.loadPlaceDetailsSuccess, (state, { place }): State.PlaceDetailsState => {
-        console.log('Details payload => ', place);
         return {
             ...state,
             error: '',

@@ -76,33 +76,27 @@ export class PlaceEffects {
         );
     });
 
-    // editQuestion$ = createEffect(() => {
-    //     return this.action$.pipe(
-    //         ofType(QuestionsApiActions.editQuestion),
-    //         switchMap((_) =>
-    //             this.questionService.editQuestion(_.id, _.question).pipe(
-    //                 switchMap((message) => {
-    //                     return [
-    //                         QuestionsUiActions.editQuestionSuccess(message),
-    //                         QuestionsUiActions.uploadQuestionPhoto({
-    //                             id: _.id,
-    //                             form: _.form,
-    //                         }),
-    //                         QuestionsApiActions.loadAllQuestions(),
-    //                     ];
-    //                 }),
-    //                 tap(() => this.router.navigate(['/admin/questions'])),
-    //                 catchError((error) =>
-    //                     of(
-    //                         QuestionsUiActions.editQuestionFail({
-    //                             error,
-    //                         })
-    //                     )
-    //                 )
-    //             )
-    //         )
-    //     );
-    // });
+    updatePlace$ = createEffect(() => {
+        return this.action$.pipe(
+            ofType(PlaceApiActions.updatePlace),
+            switchMap((_) =>
+                this.placeService.updatePlace(_.placeId, _.place).pipe(
+                    switchMap((successObject) => {
+                        return [
+                            PlaceUiActions.updatePlaceSuccess(successObject),
+                        ];
+                    }),
+                    catchError((error) =>
+                        of(
+                            PlaceUiActions.updatePlaceFail({
+                                error,
+                            })
+                        )
+                    )
+                )
+            )
+        );
+    });
     //
     // deleteQuestion$ = createEffect(() => {
     //     return this.action$.pipe(
@@ -135,81 +129,4 @@ export class PlaceEffects {
     //     );
     // });
     //
-    // changePageIndex$ = createEffect(() => {
-    //     return this.action$.pipe(
-    //         ofType(QuestionsFilters.setQuestionsCategoryId, QuestionsFilters.setQuestionsSubCategoryId),
-    //         switchMap(() => {
-    //             return [QuestionsUiActions.updatePageIndex({ pageIndex: 1 })];
-    //         })
-    //     );
-    // });
-    //
-    // checkAndUploadPhoto$ = createEffect(() => {
-    //     return this.action$.pipe(
-    //         ofType(QuestionsUiActions.uploadQuestionPhoto),
-    //         switchMap((action) => {
-    //             const actions: any[] = [];
-    //
-    //             if (action.form?.has('contentPhoto')) {
-    //                 actions.push(
-    //                     QuestionsApiActions.uploadContentPhoto({
-    //                         id: action.id,
-    //                         form: action.form,
-    //                     }) as any
-    //                 );
-    //             }
-    //
-    //             if (action.form?.has('descriptionPhoto')) {
-    //                 actions.push(
-    //                     QuestionsApiActions.uploadDescriptionPhoto({
-    //                         id: action.id,
-    //                         form: action.form,
-    //                     }) as any
-    //                 );
-    //             }
-    //
-    //             return actions;
-    //         })
-    //     );
-    // });
-    //
-    // uploadContentPhoto$ = createEffect(() => {
-    //     return this.action$.pipe(
-    //         ofType(QuestionsApiActions.uploadContentPhoto),
-    //         switchMap((_) =>
-    //             this.questionService.uploadContentPhoto(_.id, _.form).pipe(
-    //                 switchMap(() => {
-    //                     return [QuestionsUiActions.uploadQuestionPhotoSuccess()];
-    //                 }),
-    //                 catchError((error) => {
-    //                     return of(
-    //                         QuestionsUiActions.uploadQuestionPhotoFail({
-    //                             error,
-    //                         })
-    //                     );
-    //                 })
-    //             )
-    //         )
-    //     );
-    // });
-    //
-    // uploadDescriptionPhoto$ = createEffect(() => {
-    //     return this.action$.pipe(
-    //         ofType(QuestionsApiActions.uploadDescriptionPhoto),
-    //         switchMap((_) =>
-    //             this.questionService.uploadDescriptionPhoto(_.id, _.form).pipe(
-    //                 switchMap(() => {
-    //                     return [QuestionsUiActions.uploadQuestionPhotoSuccess()];
-    //                 }),
-    //                 catchError((error) => {
-    //                     return of(
-    //                         QuestionsUiActions.uploadQuestionPhotoFail({
-    //                             error,
-    //                         })
-    //                     );
-    //                 })
-    //             )
-    //         )
-    //     );
-    // });
 }

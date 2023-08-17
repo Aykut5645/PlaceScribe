@@ -9,6 +9,9 @@ export const createPlace = createAction(
     props<{ createdPlace: { creator: string; address: string; title: string; description: string } }>(),
 );
 
-export const updatePlace = createAction('[Place API] Update place', props<any>());
+export const updatePlace = createAction(
+    '[Place API] Update place',
+    props<{ placeId: string; place: { title: string; description: string } }>(),
+);
 
 export const deletePlace = createAction('[Place API] Delete place', props<any>());

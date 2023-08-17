@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { PlaceApiActions } from '../+state/actions';
@@ -10,7 +10,7 @@ import { PlaceApiActions } from '../+state/actions';
 })
 export class HandlePlaceComponent implements OnInit {
     placeForm!: FormGroup;
-    @Input() isEditMode: boolean = false;
+    @Input() isEditMode: boolean = true;
 
     constructor(
         private fb: FormBuilder,
@@ -25,7 +25,7 @@ export class HandlePlaceComponent implements OnInit {
     //     if (changes['questionDetails']) {
     //         this.createForm();
     //         if (this.isEditMode) {
-    //             dispatch place details
+    //
     //         }
     //     }
     // }
@@ -43,21 +43,30 @@ export class HandlePlaceComponent implements OnInit {
     }
 
     submitHandler(): void {
-        this.store.dispatch(
-            PlaceApiActions.createPlace({
-                createdPlace: {
-                    ...this.placeForm.value,
-                    creator: '64dd0bf8bea517374ad58dbc',
-                },
-            }),
-        );
+        if (this.isEditMode) {
+            this.store.dispatch(
+                PlaceApiActions.updatePlace({
+                    placeId: '64de2df529c482b4c30b34eb',
+                    place: { ...this.placeForm.value },
+                }),
+            );
+        } else {
+            this.store.dispatch(
+                PlaceApiActions.createPlace({
+                    createdPlace: {
+                        ...this.placeForm.value,
+                        creator: '64dd0bf8bea517374ad58dbc',
+                    },
+                }),
+            );
+        }
     }
 
     createForm(): void {
         this.placeForm = this.fb.group({
             title: [null, [Validators.required]],
             description: [null, [Validators.required, Validators.minLength(6)]],
-            address: [null, [Validators.required]],
+            // address: [null, [Validators.required]],
         });
     }
 }

@@ -26,7 +26,7 @@ export const createPlaceSuccess = createAction('[Place UI] Create place success'
 
 export const createPlaceFail = createAction('[Place UI] Create place fail', props<any>());
 
-export const updatePlaceSuccess = createAction('[Place UI] Update place success', props<any>());
+export const updatePlaceSuccess = createAction('[Place UI] Update place success', props<{ message: string }>());
 
 export const updatePlaceFail = createAction('[Place UI] Update place fail', props<any>());
 

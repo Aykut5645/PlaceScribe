@@ -138,7 +138,7 @@ const updatePlace = async (req, res, next) => {
         );
     }
 
-    res.status(200).json({ place: existingPlace.toObject({ getters: true }) });
+    res.status(200).json({ message: 'The place has been updated successfully!' });
 };
 
 const deletePlace = async (req, res, next) => {
