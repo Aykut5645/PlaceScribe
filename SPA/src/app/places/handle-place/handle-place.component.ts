@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 })
 export class HandlePlaceComponent implements OnInit {
     placeForm!: FormGroup;
-    @Input() isEditMode: boolean = false;
+    @Input() isEditMode: boolean = true;
 
     constructor(
         private fb: FormBuilder,
@@ -19,6 +19,15 @@ export class HandlePlaceComponent implements OnInit {
     ngOnInit(): void {
         this.createForm();
     }
+
+    // ngOnChanges(changes: SimpleChanges): void {
+    //     if (changes['questionDetails']) {
+    //         this.createForm();
+    //         if (this.isEditMode) {
+    //             dispatch place details
+    //         }
+    //     }
+    // }
 
     get titleIsValid() {
         return this.placeForm.get('title')?.invalid && this.placeForm.get('title')?.touched;

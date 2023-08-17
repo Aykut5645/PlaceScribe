@@ -13,7 +13,7 @@
         <div *ngIf="descriptionIsValid" style="color: orangered">Description must be at least 6 characters long.</div>
     </div>
 
-    <div class="input-container">
+    <div *ngIf="!isEditMode" class="input-container">
         <label>Address:</label>
         <input nz-input placeholder="Address" formControlName="address" />
 
