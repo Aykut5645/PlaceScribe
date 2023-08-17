@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
     providedIn: 'root',
 })
-export class AuthService {
+export class PlaceService {
     baseUrl = 'http://localhost:5000/api/places';
 
     constructor(private http: HttpClient) {}
@@ -23,7 +23,7 @@ export class AuthService {
     }
 
     updatePlace(placeId: any, place: any): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/${placeId}`, place);
+        return this.http.patch<any>(`${this.baseUrl}/${placeId}`, place);
     }
 
     deletePlace(placeId: any): Observable<any> {
