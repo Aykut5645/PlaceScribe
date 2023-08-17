@@ -30,8 +30,6 @@ export const updatePlaceSuccess = createAction('[Place UI] Update place success'
 
 export const updatePlaceFail = createAction('[Place UI] Update place fail', props<any>());
 
-export const registerFail = createAction('[Auth UI] Register Fail', props<{ error: HttpErrorResponse }>());
-
 export const deletePlaceSuccess = createAction('[Place UI] Delete place success', props<any>());
 
 export const deletePlaceFail = createAction('[Place UI] Delete place fail', props<any>());

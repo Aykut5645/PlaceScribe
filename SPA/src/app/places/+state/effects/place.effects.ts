@@ -20,9 +20,9 @@ export class PlaceEffects {
         return this.action$.pipe(
             ofType(PlaceApiActions.loadPlaceDetails),
             switchMap((_) =>
-                this.placeService.getPlaceDetails(_).pipe(
-                    switchMap((place) => {
-                        return [PlaceUiActions.loadPlaceDetailsSuccess(place)];
+                this.placeService.getPlaceDetails(_.placeId).pipe(
+                    switchMap((_) => {
+                        return [PlaceUiActions.loadPlaceDetailsSuccess(_)];
                     }),
                     catchError((error) => {
                         return of(

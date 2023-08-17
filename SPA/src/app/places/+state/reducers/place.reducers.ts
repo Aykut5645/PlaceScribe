@@ -16,7 +16,7 @@ export const placesListReducer = createReducer<State.PlacesListState>(
             ...state,
             error: '',
             loading: false,
-            places
+            places,
         };
     }),
     on(PlaceUiActions.loadPlacesByUserIdFail, (state, { error }): State.PlacesListState => {
@@ -28,8 +28,33 @@ export const placesListReducer = createReducer<State.PlacesListState>(
     }),
 );
 
+export const placeDetailsReducer = createReducer<State.PlaceDetailsState>(
+    State.initialPlaceDetailsState,
+    on(PlaceApiActions.loadPlaceDetails, (state): State.PlaceDetailsState => {
+        return {
+            ...state,
+            loading: true,
+        };
+    }),
+    on(PlaceUiActions.loadPlaceDetailsSuccess, (state, { place }): State.PlaceDetailsState => {
+        console.log('Details payload => ', place);
+        return {
+            ...state,
+            error: '',
+            loading: false,
+            place,
+        };
+    }),
+    on(PlaceUiActions.loadPlaceDetailsSuccess, (state, { error }): State.PlaceDetailsState => {
+        return {
+            ...state,
+            loading: false,
+            error: error,
+        };
+    }),
+);
+
 export const placeReducers = combineReducers<State.State>({
     placesList: placesListReducer,
-    // @ts-ignore
-    placeDetails: {},
+    placeDetails: placeDetailsReducer,
 });
