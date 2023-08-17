@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, of, switchMap } from 'rxjs';
-import { tap, withLatestFrom } from 'rxjs/operators';
 
 import { PlaceApiActions, PlaceUiActions } from '../actions';
 import { PlaceService } from '../../../services/place.service';
@@ -37,11 +36,30 @@ export class PlaceEffects {
         );
     });
 
+    loadPlacesByUserId$ = createEffect(() => {
+        return this.action$.pipe(
+            ofType(PlaceApiActions.loadPlacesByUserId),
+            switchMap((_) =>
+                this.placeService.getPlacesByUserId(_.userId).pipe(
+                    switchMap((_) => {
+                        return [PlaceUiActions.loadPlacesByUserIdSuccess(_)];
+                    }),
+                    catchError((error) => {
+                        return of(
+                            PlaceUiActions.loadPlacesByUserIdFail({
+                                error,
+                            })
+                        );
+                    })
+                )
+            )
+        );
+    });
+
     createPlace$ = createEffect(() => {
         return this.action$.pipe(
             ofType(PlaceApiActions.createPlace),
             switchMap((_) => {
-                console.log('Place in effects => ', _.createdPlace);
                 return this.placeService.createPlace(_.createdPlace).pipe(
                     switchMap((successObject) => {
                         return [PlaceUiActions.createPlaceSuccess(successObject)];

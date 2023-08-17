@@ -11,17 +11,14 @@ export const placesListReducer = createReducer<State.PlacesListState>(
             loading: true,
         };
     }),
-    on(
-        PlaceUiActions.loadPlacesByUserIdSuccess,
-        (state, payload): State.PlacesListState => {
-            return {
-                ...state,
-                error: '',
-                loading: false,
-                places: payload
-            };
-        }
-    ),
+    on(PlaceUiActions.loadPlacesByUserIdSuccess, (state, { places }): State.PlacesListState => {
+        return {
+            ...state,
+            error: '',
+            loading: false,
+            places
+        };
+    }),
     on(PlaceUiActions.loadPlacesByUserIdFail, (state, { error }): State.PlacesListState => {
         return {
             ...state,

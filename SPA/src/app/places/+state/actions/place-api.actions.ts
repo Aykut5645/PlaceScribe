@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-export const loadPlacesByUserId = createAction('[Place API] Load places by user ID', props<any>());
+export const loadPlacesByUserId = createAction('[Place API] Load places by user ID', props<{ userId: string }>());
 
 export const loadPlaceDetails = createAction('[Place API] Load place details', props<any>());
 

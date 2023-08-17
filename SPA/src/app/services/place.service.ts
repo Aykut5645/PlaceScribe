@@ -11,7 +11,7 @@ export class PlaceService {
     constructor(private http: HttpClient) {}
 
     getPlacesByUserId(userId: any): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/${userId}`);
+        return this.http.get<any>(`${this.baseUrl}/user/${userId}`);
     }
 
     getPlaceDetails(placeId: any): Observable<any> {
