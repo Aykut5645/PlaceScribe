@@ -10,6 +10,10 @@ export class AuthService {
 
     constructor(private http: HttpClient) {}
 
+    getAllUsers(): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}`);
+    }
+
     login(userLogin: any): Observable<any> {
         return this.http.post<any>(`${this.baseUrl}/login`, userLogin);
     }

@@ -16,6 +16,31 @@ export const isLoadingButtonReducer = createReducer<boolean>(
     }),
 );
 
+export const usersReducer = createReducer<State.UsersListState>(
+    State.initialUsersListState,
+    on(AuthApiActions.loadAllUsers, (state): State.UsersListState => {
+        return {
+            ...state,
+            loading: true,
+        };
+    }),
+    on(AuthUiActions.loadAllUsersSuccess, (state, { users }): State.UsersListState => {
+        return {
+            loading: false,
+            users,
+            error: '',
+        };
+    }),
+    on(AuthUiActions.loadAllUsersFail, (state, { error }): State.UsersListState => {
+        return {
+            loading: false,
+            users: [],
+            error: error.error,
+        };
+    }),
+);
+
 export const authReducers = combineReducers<State.State>({
     isLoadingButton: isLoadingButtonReducer,
+    usersList: usersReducer,
 });

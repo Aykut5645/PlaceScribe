@@ -15,6 +15,26 @@ export class AuthEffects {
         private router: Router,
     ) {}
 
+    loadAllUsers$ = createEffect(() => {
+        return this.action$.pipe(
+            ofType(AuthApiActions.loadAllUsers),
+            switchMap((_) =>
+                this.authService.getAllUsers().pipe(
+                    switchMap((_) => {
+                        return [AuthUiActions.loadAllUsersSuccess(_)];
+                    }),
+                    catchError((error) => {
+                        return of(
+                            AuthUiActions.loadAllUsersFail({
+                                error,
+                            })
+                        );
+                    })
+                )
+            )
+        );
+    });
+
     login$ = createEffect(() => {
         return this.action$.pipe(
             ofType(AuthApiActions.login),
