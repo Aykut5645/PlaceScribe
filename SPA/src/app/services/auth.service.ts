@@ -19,6 +19,13 @@ export class AuthService {
     }
 
     register(userToRegister: any): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/signup`, userToRegister);
+        const formData = new FormData();
+
+        formData.append('email', userToRegister.email);
+        formData.append('name', userToRegister.name);
+        formData.append('password', userToRegister.password);
+        formData.append('image', userToRegister.image);
+
+        return this.http.post<any>(`${this.baseUrl}/signup`, formData);
     }
 }
