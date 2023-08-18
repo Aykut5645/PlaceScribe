@@ -7,7 +7,7 @@ import { PlaceDetailsComponent } from './place-details/place-details.component';
 const routes: Routes = [
     { path: '', pathMatch: 'full', redirectTo: 'users' },
     {
-        path: '',
+        path: 'user/:userId',
         component: PlacesComponent,
     },
     {

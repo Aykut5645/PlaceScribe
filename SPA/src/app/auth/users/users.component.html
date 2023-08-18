@@ -2,7 +2,7 @@
     <a
         *ngFor='let user of users | async'
         style="border: 3px solid #f1cb30; padding: 2rem; display: flex; gap: 3rem"
-        [routerLink]="['/places']"
+        [routerLink]="['/places/user/' + user.id]"
     >
         <div>
             <img

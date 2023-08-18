@@ -20,6 +20,4 @@ export class UsersComponent implements OnInit {
         this.users = this.store.select(AuthSelectors.getUsersList);
         this.store.select(AuthSelectors.getUsersList).subscribe(console.log);
     }
-
-    protected readonly JSON = JSON;
 }

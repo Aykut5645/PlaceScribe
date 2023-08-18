@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { PlaceApiActions } from '../+state/actions';
+import { mimeType } from '../../mime-type.validator';
 
 @Component({
     selector: 'app-handle-place',
@@ -11,6 +12,7 @@ import { PlaceApiActions } from '../+state/actions';
 export class HandlePlaceComponent implements OnInit {
     placeForm!: FormGroup;
     @Input() isEditMode: boolean = false;
+    imagePreview: string = '';
 
     constructor(
         private fb: FormBuilder,
@@ -29,6 +31,22 @@ export class HandlePlaceComponent implements OnInit {
     //         }
     //     }
     // }
+
+    imagePickerHandler(event: Event): void {
+        const fileInput = event.target as HTMLInputElement;
+        if (fileInput.files && fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+
+            this.placeForm.patchValue({ image: file });
+            this.placeForm.get('image')?.updateValueAndValidity();
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                this.imagePreview = reader.result as string;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
 
     get titleIsValid() {
         return this.placeForm.get('title')?.invalid && this.placeForm.get('title')?.touched;
@@ -55,7 +73,7 @@ export class HandlePlaceComponent implements OnInit {
                 PlaceApiActions.createPlace({
                     createdPlace: {
                         ...this.placeForm.value,
-                        creator: '64de5ec7d64dc7131d3efb00',
+                        creator: '64df7a6a1df3f6dc78cc15b9',
                     },
                 }),
             );
@@ -67,6 +85,7 @@ export class HandlePlaceComponent implements OnInit {
             title: [null, [Validators.required]],
             description: [null, [Validators.required, Validators.minLength(6)]],
             address: [null, [Validators.required]],
+            image: [null, { validators: [Validators.required], asyncValidators: [mimeType] }],
         });
     }
 }
