@@ -25,7 +25,6 @@ export const usersReducer = createReducer<State.UsersListState>(
         };
     }),
     on(AuthUiActions.loadAllUsersSuccess, (state, { users }): State.UsersListState => {
-        console.log('reducer',users);
         return {
             loading: false,
             users,

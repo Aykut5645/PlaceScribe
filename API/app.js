@@ -1,5 +1,8 @@
 const express = require('express');
 const { connect } = require("mongoose");
+
+const fs = require('fs');
+const path = require('path');
 require('dotenv').config();
 
 const usersRoutes = require('./routes/users-routes');
@@ -10,6 +13,8 @@ const PORT = 5000;
 const app = express();
 
 app.use(express.json());
+
+app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -27,6 +32,7 @@ app.use((req, res) => {
     throw new HttpError('Could not find this route.', 404);
 });
 app.use((error, req, res, next) => {
+    if (req.file) fs.unlink(req.file.path, (err) => console.log(err));
     if (res.headersSent) return next(error);
 
     res.status(error.code || 500);

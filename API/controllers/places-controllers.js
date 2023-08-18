@@ -1,5 +1,6 @@
 const { startSession } = require("mongoose");
 const { validationResult } = require('express-validator');
+const fs = require('fs');
 
 const Place = require('../models/Place');
 const User = require('../models/User');
@@ -75,7 +76,7 @@ const createPlace = async (req, res, next) => {
         description,
         address,
         location: coordinates,
-        imageUrl: 'https://s39023.pcdn.co/wp-content/uploads/2022/10/Where-Are-Those-Morgans-Empire-State-Building-728x546.jpg.optimal.jpg',
+        imageUrl: req.file.path,
         creator,
     });
 
@@ -159,6 +160,8 @@ const deletePlace = async (req, res, next) => {
         );
     }
 
+    const imagePath = place.imageUrl;
+
     try {
         const session = await startSession();
         await session.withTransaction(async () => {
@@ -171,6 +174,8 @@ const deletePlace = async (req, res, next) => {
             new HttpError('Something went wrong. Could not delete a place.', 500)
         );
     }
+
+    fs.unlink(imagePath, (err) => console.log(err));
 
     res.status(200).json({ message: 'Deleted successfully' });
 };
