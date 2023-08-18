@@ -18,10 +18,24 @@
                 <div>{{ place.description }}</div>
             </div>
             <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem">
-                <button nz-button nzType="primary">VIEW ON MAP</button>
+                <button nz-button nzType="primary" (click)="openModalHandler()">VIEW ON MAP</button>
                 <button nz-button nzType="primary">EDIT</button>
                 <button nz-button nzType="primary">DELETE</button>
             </div>
         </div>
     </div>
+
+    <nz-modal
+        nzTitle="Something"
+        [nzFooter]="null"
+        [(nzVisible)]="isModalOpen"
+        (nzOnCancel)="closeModalHandler()"
+    >
+        <ng-container *nzModalContent>
+            <div class="my-google-map">
+                <google-map [center]="mapCenter" [zoom]="mapZoom" style="height: 300px; display: inline-block"></google-map>
+            </div>
+            <button nz-button nzType="default" type="button" (click)="closeModalHandler()">Затвори</button>
+        </ng-container>
+    </nz-modal>
 </div>

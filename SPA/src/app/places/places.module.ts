@@ -13,6 +13,8 @@ import { HandlePlaceComponent } from './handle-place/handle-place.component';
 import { PlaceDetailsComponent } from './place-details/place-details.component';
 import { PlaceEffects } from './+state/effects/place.effects';
 import { placeReducers } from './+state/reducers/place.reducers';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 @NgModule({
     declarations: [PlacesComponent, HandlePlaceComponent, PlaceDetailsComponent],
@@ -25,6 +27,8 @@ import { placeReducers } from './+state/reducers/place.reducers';
         ReactiveFormsModule,
         StoreModule.forFeature('places', placeReducers),
         EffectsModule.forFeature([PlaceEffects]),
+        GoogleMapsModule,
+        NzModalModule,
     ],
 })
 export class PlacesModule {}
