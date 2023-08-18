@@ -25,3 +25,16 @@ form {
         }
     }
 }
+
+input[type="file"] {
+    visibility: hidden;
+}
+
+.image-preview {
+    height: 8rem;
+    margin: 1rem 0;
+
+    img {
+        height: 100%;
+    }
+}

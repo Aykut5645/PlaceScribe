@@ -11,8 +11,12 @@ import { AuthApiActions } from '../+state/actions';
 export class RegisterComponent implements OnInit {
     registerForm!: FormGroup;
     passwordInputType = 'password';
+    imagePreview: string = '';
 
-    constructor(private fb: FormBuilder, private store: Store) {}
+    constructor(
+        private fb: FormBuilder,
+        private store: Store,
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -20,6 +24,22 @@ export class RegisterComponent implements OnInit {
 
     changePasswordInputType(type: string): void {
         this.passwordInputType = type;
+    }
+
+    imagePickerHandler(event: Event): void {
+        const fileInput = event.target as HTMLInputElement;
+        if (fileInput.files && fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+
+            this.registerForm.patchValue({ image: file });
+            this.registerForm.get('image')?.updateValueAndValidity();
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                this.imagePreview = reader.result as string;
+            };
+            reader.readAsDataURL(file);
+        }
     }
 
     get nameIsValid(): boolean {
@@ -48,6 +68,7 @@ export class RegisterComponent implements OnInit {
 
     private createForm(): void {
         this.registerForm = this.fb.group({
+            image: [null, [Validators.required]],
             name: [null, [Validators.required]],
             email: [null, [Validators.required, Validators.email]],
             password: [null, [Validators.required, Validators.minLength(6)]],
