@@ -4,7 +4,6 @@ const HttpError = require("../models/Http-error");
 module.exports = (req, res, next) => {
     try {
         const token = req.headers.authorization?.split(' ')[1];
-        console.log('Token => ', token);
         if (!token) {
             throw new Error('Authentication failed.');
         }

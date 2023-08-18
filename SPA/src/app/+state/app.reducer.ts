@@ -1,4 +1,4 @@
-import { ActionReducerMap, combineReducers, createReducer, on } from '@ngrx/store';
+import { combineReducers, createReducer, on } from '@ngrx/store';
 
 import * as State from './app.state';
 import { AuthApiActions, AuthUiActions } from '../auth/+state/actions';
@@ -11,11 +11,10 @@ export const currentUserReducer = createReducer<State.CurrentUserState>(
             loading: true,
         };
     }),
-    on(AuthUiActions.loginSuccess, (state, payload): State.CurrentUserState => {
-        console.log('Payload => ', payload);
+    on(AuthUiActions.loginSuccess, (state, { userId, email, token }): State.CurrentUserState => {
         return {
             ...state,
-            // user: userLoginResponse.user,
+            user: { userId, email, token },
             loading: false,
             error: '',
         };

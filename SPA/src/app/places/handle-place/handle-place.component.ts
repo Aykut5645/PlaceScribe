@@ -10,7 +10,7 @@ import { PlaceApiActions } from '../+state/actions';
 })
 export class HandlePlaceComponent implements OnInit {
     placeForm!: FormGroup;
-    @Input() isEditMode: boolean = true;
+    @Input() isEditMode: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -55,7 +55,7 @@ export class HandlePlaceComponent implements OnInit {
                 PlaceApiActions.createPlace({
                     createdPlace: {
                         ...this.placeForm.value,
-                        creator: '64dd0bf8bea517374ad58dbc',
+                        creator: '64de5ec7d64dc7131d3efb00',
                     },
                 }),
             );
@@ -66,7 +66,7 @@ export class HandlePlaceComponent implements OnInit {
         this.placeForm = this.fb.group({
             title: [null, [Validators.required]],
             description: [null, [Validators.required, Validators.minLength(6)]],
-            // address: [null, [Validators.required]],
+            address: [null, [Validators.required]],
         });
     }
 }
