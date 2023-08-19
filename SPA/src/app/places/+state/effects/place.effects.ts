@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, of, switchMap } from 'rxjs';
 
 import { PlaceApiActions, PlaceUiActions } from '../actions';
-import { PlaceService } from '../../../services/place.service';
+import { PlaceService } from '../../../../shared/services/place.service';
 
 @Injectable()
 export class PlaceEffects {

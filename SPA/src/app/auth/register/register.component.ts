@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
 import { AuthApiActions } from '../+state/actions';
-import { mimeType } from '../../mime-type.validator';
+import { mimeType } from '../../../shared/validators/mime-type.validator';
 
 @Component({
     selector: 'app-register',

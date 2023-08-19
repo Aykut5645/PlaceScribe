@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { PlaceApiActions } from '../+state/actions';
-import { mimeType } from '../../mime-type.validator';
+import { mimeType } from '../../../shared/validators/mime-type.validator';
 
 @Component({
     selector: 'app-handle-place',

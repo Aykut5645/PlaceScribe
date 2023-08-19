@@ -5,7 +5,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import { AuthApiActions, AuthUiActions } from '../actions';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../../../shared/services/auth.service';
 
 @Injectable()
 export class AuthEffects {
@@ -46,6 +46,9 @@ export class AuthEffects {
 
                         return AuthUiActions.loginSuccess(loginResData);
                     }),
+                    tap((_) => {
+                        this.router.navigate(['/auth/users']);
+                    }),
                     catchError((error) => {
                         return of(
                             AuthUiActions.loginFail({
@@ -81,17 +84,14 @@ export class AuthEffects {
         );
     });
 
-    logout$ = createEffect(
-        () =>
-            this.action$.pipe(
-                ofType(AuthApiActions.logout),
-                tap(() => {
-                    this.router.navigate(['/auth/login']);
-                    this.authService.logout();
-                }),
-            ),
-        {
-            dispatch: false,
-        },
+    logout$ = createEffect(() =>
+        this.action$.pipe(
+            ofType(AuthApiActions.logout),
+            tap(() => {
+                this.authService.logout();
+                this.router.navigate(['/auth/login']);
+            }),
+            map(() => AuthUiActions.logoutSuccess()),
+        ),
     );
 }

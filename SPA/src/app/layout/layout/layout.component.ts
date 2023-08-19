@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../shared/services/auth.service';
 import { Store } from '@ngrx/store';
 import { AuthApiActions } from '../../auth/+state/actions';
 
@@ -9,16 +9,19 @@ import { AuthApiActions } from '../../auth/+state/actions';
     styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent implements OnInit {
-    userId: string;
+    constructor(
+        private authService: AuthService,
+        private store: Store,
+    ) {}
 
-    constructor(private authService: AuthService, private store: Store) {}
-
-    ngOnInit(): void {
-        this.userId = this.authService.getUser().userId;
-    }
+    ngOnInit(): void {}
 
     isLoggedIn(): boolean {
         return this.authService.loggedIn();
+    }
+
+    getUserId(): string {
+        return this.authService.getUser()?.userId;
     }
 
     logoutHandler(): void {

@@ -23,7 +23,7 @@
 
                 <ng-container *ngIf="isLoggedIn()">
                     <li class="main-nav__item">
-                        <a routerLink="/places/user/{{ userId }}" routerLinkActive="active">My places</a>
+                        <a routerLink="/places/user/{{ getUserId() }}" routerLinkActive="active">My places</a>
                     </li>
                     <li class="main-nav__item">
                         <a routerLink="/places/create" routerLinkActive="active">Add Place</a>

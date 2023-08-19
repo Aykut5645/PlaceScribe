@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, RunGuardsAndResolvers } from '@angular/router';
 
 import { LayoutComponent } from './layout/layout.component';
+import { AuthGuard } from '../../shared/guards/auth.guard';
+import { LoginRegisterGuard } from '../../shared/guards/login-register.guard';
 
 const routes: Routes = [
     {
@@ -14,6 +16,8 @@ const routes: Routes = [
             },
             {
                 path: 'places',
+                runGuardsAndResolvers: 'always' as RunGuardsAndResolvers,
+                canActivate: [AuthGuard],
                 loadChildren: () => import('../places/places.module').then((m) => m.PlacesModule),
             },
         ],
