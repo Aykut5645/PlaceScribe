@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { Store } from '@ngrx/store';
+import { AuthApiActions } from '../../auth/+state/actions';
 
 @Component({
     selector: 'app-layout',
@@ -9,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
 export class LayoutComponent implements OnInit {
     userId: string;
 
-    constructor(private authService: AuthService) {}
+    constructor(private authService: AuthService, private store: Store) {}
 
     ngOnInit(): void {
         this.userId = this.authService.getUser().userId;
@@ -17,5 +19,9 @@ export class LayoutComponent implements OnInit {
 
     isLoggedIn(): boolean {
         return this.authService.loggedIn();
+    }
+
+    logoutHandler(): void {
+        this.store.dispatch(AuthApiActions.logout());
     }
 }

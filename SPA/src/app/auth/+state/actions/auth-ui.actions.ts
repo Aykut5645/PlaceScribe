@@ -12,3 +12,5 @@ export const registerSuccess = createAction('[Auth UI] Register Success', props<
 export const loginFail = createAction('[Auth UI] Login Fail', props<{ error: HttpErrorResponse }>());
 
 export const registerFail = createAction('[Auth UI] Register Fail', props<{ error: HttpErrorResponse }>());
+
+export const logoutSuccess = createAction('[Auth API] Logout Success');

@@ -80,4 +80,18 @@ export class AuthEffects {
             }),
         );
     });
+
+    logout$ = createEffect(
+        () =>
+            this.action$.pipe(
+                ofType(AuthApiActions.logout),
+                tap(() => {
+                    this.router.navigate(['/auth/login']);
+                    this.authService.logout();
+                }),
+            ),
+        {
+            dispatch: false,
+        },
+    );
 }

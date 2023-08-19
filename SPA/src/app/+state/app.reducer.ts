@@ -27,6 +27,14 @@ export const currentUserReducer = createReducer<State.CurrentUserState>(
             error: error.message,
         };
     }),
+    on(AuthUiActions.logoutSuccess, (state): State.CurrentUserState => {
+        return {
+            ...state,
+            user: {},
+            loading: false,
+            error: '',
+        };
+    }),
 );
 
 export const applicationReducers = combineReducers<State.State>({

@@ -51,4 +51,9 @@ export class AuthService {
     getUser(): { userId: string; email: string } {
         return JSON.parse(localStorage.getItem('user'));
     }
+
+    logout(): void {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+    }
 }

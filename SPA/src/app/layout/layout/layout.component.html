@@ -12,7 +12,7 @@
                     <a routerLink="/auth/users" routerLinkActive="active">All Users</a>
                 </li>
 
-                <ng-container *ngIf="!isLoggedIn">
+                <ng-container *ngIf="!isLoggedIn()">
                     <li class="main-nav__item">
                         <a routerLink="/auth/login" routerLinkActive="active">Login</a>
                     </li>
@@ -21,14 +21,14 @@
                     </li>
                 </ng-container>
 
-                <ng-container *ngIf="isLoggedIn">
+                <ng-container *ngIf="isLoggedIn()">
                     <li class="main-nav__item">
                         <a routerLink="/places/user/{{ userId }}" routerLinkActive="active">My places</a>
                     </li>
                     <li class="main-nav__item">
                         <a routerLink="/places/create" routerLinkActive="active">Add Place</a>
                     </li>
-                    <li class="main-nav__item main-nav__item--logout">
+                    <li class="main-nav__item main-nav__item--logout" (click)="logoutHandler()">
                         <a routerLink="/auth/logout" routerLinkActive="active">Logout</a>
                     </li>
                 </ng-container>
