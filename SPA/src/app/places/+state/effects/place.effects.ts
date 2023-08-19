@@ -13,7 +13,7 @@ export class PlaceEffects {
         public action$: Actions,
         private placeService: PlaceService,
         public router: Router,
-        private store: Store
+        private store: Store,
     ) {}
 
     loadPlaceDetails$ = createEffect(() => {
@@ -28,11 +28,11 @@ export class PlaceEffects {
                         return of(
                             PlaceUiActions.loadPlaceDetailsFail({
                                 error,
-                            })
+                            }),
                         );
-                    })
-                )
-            )
+                    }),
+                ),
+            ),
         );
     });
 
@@ -48,11 +48,11 @@ export class PlaceEffects {
                         return of(
                             PlaceUiActions.loadPlacesByUserIdFail({
                                 error,
-                            })
+                            }),
                         );
-                    })
-                )
-            )
+                    }),
+                ),
+            ),
         );
     });
 
@@ -84,49 +84,41 @@ export class PlaceEffects {
                     switchMap((successObject) => {
                         return [
                             PlaceUiActions.updatePlaceSuccess(successObject),
+                            PlaceApiActions.loadPlacesByUserId({ userId: _.creatorId }),
                         ];
                     }),
                     catchError((error) =>
                         of(
                             PlaceUiActions.updatePlaceFail({
                                 error,
-                            })
-                        )
-                    )
-                )
-            )
+                            }),
+                        ),
+                    ),
+                ),
+            ),
         );
     });
-    //
-    // deleteQuestion$ = createEffect(() => {
-    //     return this.action$.pipe(
-    //         ofType(QuestionsApiActions.deleteQuestion),
-    //         withLatestFrom(this.store.select(AllQuestionsSelector.getPagination)),
-    //         switchMap(([_, pagination]) =>
-    //             this.questionService.deleteQuestion(_.id).pipe(
-    //                 switchMap((message) => {
-    //                     if (pagination.currentPage > 1 && pagination.totalItems % 10 === 1) {
-    //                         return [
-    //                             QuestionsUiActions.deleteQuestionSuccess(message),
-    //                             QuestionsUiActions.updatePageIndex({ pageIndex: pagination.currentPage - 1 }),
-    //                         ];
-    //                     }
-    //                     return [
-    //                         QuestionsUiActions.deleteQuestionSuccess(message),
-    //                         QuestionsApiActions.loadAllQuestions(),
-    //                     ];
-    //                 }),
-    //                 tap(() => this.router.navigate(['/admin/questions'])),
-    //                 catchError((error) =>
-    //                     of(
-    //                         QuestionsUiActions.deleteQuestionFail({
-    //                             error,
-    //                         })
-    //                     )
-    //                 )
-    //             )
-    //         )
-    //     );
-    // });
-    //
+
+    deletePlace$ = createEffect(() => {
+        return this.action$.pipe(
+            ofType(PlaceApiActions.deletePlace),
+            switchMap((_) =>
+                this.placeService.deletePlace(_.placeId).pipe(
+                    switchMap((successObject) => {
+                        return [
+                            PlaceUiActions.deletePlaceSuccess(successObject),
+                            PlaceApiActions.loadPlacesByUserId({ userId: _.userId }),
+                        ];
+                    }),
+                    catchError((error) =>
+                        of(
+                            PlaceUiActions.deletePlaceFail({
+                                error,
+                            }),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    });
 }

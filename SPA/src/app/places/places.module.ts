@@ -15,9 +15,10 @@ import { PlaceEffects } from './+state/effects/place.effects';
 import { placeReducers } from './+state/reducers/place.reducers';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { PlaceEditComponent } from './place-edit/place-edit.component';
 
 @NgModule({
-    declarations: [PlacesComponent, HandlePlaceComponent, PlaceDetailsComponent],
+    declarations: [PlacesComponent, HandlePlaceComponent, PlaceDetailsComponent, PlaceEditComponent],
     imports: [
         CommonModule,
         PlacesRoutingModule,

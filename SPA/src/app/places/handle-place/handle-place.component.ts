@@ -23,15 +23,6 @@ export class HandlePlaceComponent implements OnInit {
         this.createForm();
     }
 
-    // ngOnChanges(changes: SimpleChanges): void {
-    //     if (changes['questionDetails']) {
-    //         this.createForm();
-    //         if (this.isEditMode) {
-    //
-    //         }
-    //     }
-    // }
-
     imagePickerHandler(event: Event): void {
         const fileInput = event.target as HTMLInputElement;
         if (fileInput.files && fileInput.files.length > 0) {
@@ -61,23 +52,14 @@ export class HandlePlaceComponent implements OnInit {
     }
 
     submitHandler(): void {
-        if (this.isEditMode) {
-            this.store.dispatch(
-                PlaceApiActions.updatePlace({
-                    placeId: '64de2df529c482b4c30b34eb',
-                    place: { ...this.placeForm.value },
-                }),
-            );
-        } else {
-            this.store.dispatch(
-                PlaceApiActions.createPlace({
-                    createdPlace: {
-                        ...this.placeForm.value,
-                        creator: '64df7a6a1df3f6dc78cc15b9',
-                    },
-                }),
-            );
-        }
+        this.store.dispatch(
+            PlaceApiActions.createPlace({
+                createdPlace: {
+                    ...this.placeForm.value,
+                    creator: '64df7a6a1df3f6dc78cc15b9',
+                },
+            }),
+        );
     }
 
     createForm(): void {

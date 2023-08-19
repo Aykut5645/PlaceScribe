@@ -160,7 +160,7 @@ const deletePlace = async (req, res, next) => {
         );
     }
 
-    const imagePath = place.imageUrl;
+    const imagePath = existingPlace.imageUrl;
 
     try {
         const session = await startSession();

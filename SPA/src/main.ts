@@ -14,7 +14,6 @@ window['initMap'] = () => {
         .catch(err => console.error(err));
 };
 
-// Create a script tag for the Google Maps API with callback
 const script = document.createElement('script');
 script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.GOOGLE_API_KEY}&libraries=visualization&callback=initMap`;
 script.defer = true;

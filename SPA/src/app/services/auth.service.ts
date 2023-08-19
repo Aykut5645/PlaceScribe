@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
     baseUrl = 'http://localhost:5000/api/users';
+    jwtHelper = new JwtHelperService();
 
     constructor(private http: HttpClient) {}
 
@@ -27,5 +29,26 @@ export class AuthService {
         formData.append('image', userToRegister.image);
 
         return this.http.post<any>(`${this.baseUrl}/signup`, formData);
+    }
+
+    setToken(token: string): void {
+        localStorage.setItem('token', token);
+    }
+
+    getToken(): string {
+        return localStorage.getItem('token');
+    }
+
+    loggedIn(): boolean {
+        const token = this.getToken();
+        return !this.jwtHelper.isTokenExpired(token);
+    }
+
+    setUser(user: { userId: string; email: string }): void {
+        localStorage.setItem('user', JSON.stringify(user));
+    }
+
+    getUser(): { userId: string; email: string } {
+        return JSON.parse(localStorage.getItem('user'));
     }
 }
