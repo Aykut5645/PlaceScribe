@@ -51,6 +51,7 @@
     gap: 6rem;
     margin: 0;
     padding: 0;
+    align-items: center;
 
     &__item > a {
         position: relative;
@@ -71,14 +72,32 @@
                 height: 2px;
                 background-color: #f1cb30;
                 bottom: -4px;
-                transform: scaleX(0); /* Initial scale to hide the line */
+                transform: scaleX(0);
                 transform-origin: left center;
                 transition: transform 0.3s;
             }
         }
 
         &.active::before {
-            transform: scaleX(1); /* Show the line on active state */
+            transform: scaleX(1);
+        }
+    }
+
+    &__item--logout {
+        border: 2px solid #f1cb30;
+        padding: 1rem;
+        cursor: pointer;
+
+        a {
+            color: #f1cb30;
+        }
+
+        &:hover {
+            background-color: #f1cb30;
+
+            a {
+                color: #0B172A;
+            }
         }
     }
 }

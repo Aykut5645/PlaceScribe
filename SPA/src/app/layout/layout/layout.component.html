@@ -11,12 +11,27 @@
                 <li class="main-nav__item">
                     <a routerLink="/auth/users" routerLinkActive="active">All Users</a>
                 </li>
-                <li class="main-nav__item">
-                    <a routerLink="/auth/login" routerLinkActive="active">Login</a>
-                </li>
-                <li class="main-nav__item">
-                    <a routerLink="/auth/register" routerLinkActive="active">Register</a>
-                </li>
+
+                <ng-container *ngIf="!isLoggedIn">
+                    <li class="main-nav__item">
+                        <a routerLink="/auth/login" routerLinkActive="active">Login</a>
+                    </li>
+                    <li class="main-nav__item">
+                        <a routerLink="/auth/register" routerLinkActive="active">Register</a>
+                    </li>
+                </ng-container>
+
+                <ng-container *ngIf="isLoggedIn">
+                    <li class="main-nav__item">
+                        <a routerLink="/places/user/{{ userId }}" routerLinkActive="active">My places</a>
+                    </li>
+                    <li class="main-nav__item">
+                        <a routerLink="/places/create" routerLinkActive="active">Add Place</a>
+                    </li>
+                    <li class="main-nav__item main-nav__item--logout">
+                        <a routerLink="/auth/logout" routerLinkActive="active">Logout</a>
+                    </li>
+                </ng-container>
             </ul>
         </nav>
     </header>
