@@ -7,6 +7,7 @@ import { Observable, Subject } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { switchMap, takeUntil } from 'rxjs/operators';
+import { CurrentUserSelectors } from '../../+state/selectors';
 
 @Component({
     selector: 'app-places',
@@ -21,6 +22,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
     isEditModalOpen: boolean = false;
     placeDetails: any;
     form!: FormGroup;
+    currentUserId: Observable<string>;
     private destroy$ = new Subject<void>();
 
     constructor(
@@ -36,6 +38,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
                 switchMap((params: Params) => {
                     this.userId = params['userId'];
                     this.store.dispatch(PlaceApiActions.loadPlacesByUserId({ userId: this.userId }));
+                    this.currentUserId = this.store.select(CurrentUserSelectors.getCurrentUserId);
                     return this.store.select(PlacesListSelector.getPlacesList);
                 }),
                 takeUntil(this.destroy$),
@@ -45,7 +48,11 @@ export class PlacesComponent implements OnInit, OnDestroy {
             });
     }
 
-    openModalHandler(): void {
+    openModalHandler(placeId: string): void {
+        this.store.dispatch(PlaceApiActions.loadPlaceDetails({ placeId: placeId }));
+        this.store.select(PlaceDetailsSelector.getPlaceDetails).subscribe((placeDetails) => {
+            this.placeDetails = placeDetails;
+        });
         this.isModalOpen = true;
     }
 
@@ -81,8 +88,8 @@ export class PlacesComponent implements OnInit, OnDestroy {
         this.store.select(PlaceDetailsSelector.getPlaceDetails).subscribe((placeDetails) => {
             this.placeDetails = placeDetails;
             this.createForm();
-            this.isEditModalOpen = true;
         });
+        this.isEditModalOpen = true;
     }
 
     showDeleteHandler(placeId: string): void {

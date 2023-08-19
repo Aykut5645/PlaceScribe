@@ -14,12 +14,11 @@ import { PlaceEffects } from './+state/effects/place.effects';
 import { placeReducers } from './+state/reducers/place.reducers';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { NzModalModule } from 'ng-zorro-antd/modal';
-import { PlaceEditComponent } from './place-edit/place-edit.component';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzImageModule } from 'ng-zorro-antd/image';
 
 @NgModule({
-    declarations: [PlacesComponent, HandlePlaceComponent, PlaceEditComponent],
+    declarations: [PlacesComponent, HandlePlaceComponent],
     imports: [
         CommonModule,
         PlacesRoutingModule,
