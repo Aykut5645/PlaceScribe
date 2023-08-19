@@ -107,7 +107,7 @@ const createPlace = async (req, res, next) => {
         );
     }
 
-    res.status(201).json({ message: 'The place has been created successfully!' });
+    res.status(201).json({ message: 'The place has been created successfully!', userId: creator });
 };
 
 const updatePlace = async (req, res, next) => {
