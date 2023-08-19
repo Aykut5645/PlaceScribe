@@ -31,10 +31,10 @@ input[type="file"] {
 }
 
 .image-preview {
-    height: 8rem;
-    margin: 1rem 0;
+    height: 9rem;
 
     img {
         height: 100%;
+        border-radius: 50%;
     }
 }

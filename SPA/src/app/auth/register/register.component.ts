@@ -14,6 +14,7 @@ export class RegisterComponent implements OnInit {
     registerForm!: FormGroup;
     passwordInputType = 'password';
     imagePreview: string = '';
+    currentStep = 0;
 
     constructor(
         private fb: FormBuilder,
@@ -62,6 +63,18 @@ export class RegisterComponent implements OnInit {
                 this.registerForm.get('confirmPassword')?.valid &&
                 this.registerForm.get('password')?.value !== this.registerForm.get('confirmPassword')?.value,
         );
+    }
+
+    get imageIsValid(): boolean {
+        return Boolean(this.registerForm.get('image')?.invalid);
+    }
+
+    nextStep(): void {
+        this.currentStep++;
+    }
+
+    previousStep(): void {
+        this.currentStep--;
     }
 
     submitHandler(): void {

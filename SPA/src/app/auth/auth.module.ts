@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
 import { authReducers } from './+state/reducers/auth.reducers';
 import { AuthEffects } from './+state/effects/auth.effects';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 @NgModule({
     declarations: [RegisterComponent, LoginComponent, UsersComponent, AuthLayoutComponent],
@@ -26,6 +27,7 @@ import { AuthEffects } from './+state/effects/auth.effects';
         ReactiveFormsModule,
         EffectsModule.forFeature([AuthEffects]),
         StoreModule.forFeature('auth', authReducers),
+        NzAvatarModule,
     ],
 })
 export class AuthModule {}

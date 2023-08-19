@@ -42,14 +42,14 @@ const getPlacesByUserId = async (req, res, next) => {
         );
     }
 
-    if (currentPlaces?.length === 0) {
-        return next(
-            new HttpError(
-                'Could not find a user for the provided id.',
-                404
-            )
-        );
-    }
+    // if (currentPlaces?.length === 0) {
+    //     return next(
+    //         new HttpError(
+    //             'Could not find a user for the provided id.',
+    //             404
+    //         )
+    //     );
+    // }
 
     res.json({ places: currentPlaces.map(place => place.toObject({ getters: true })) });
 };

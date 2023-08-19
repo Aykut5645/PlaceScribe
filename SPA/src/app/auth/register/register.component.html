@@ -1,58 +1,77 @@
-<app-auth-layout heading="Register" mark="">
+<app-auth-layout heading="{{ currentStep === 0 ? 'Register' : 'Create Strong Password' }}" mark="">
     <form [formGroup]="registerForm" (ngSubmit)="submitHandler()">
-        <div>
-            <button nz-button type="button" (click)="filePicker.click()">Pick the image</button>
-            <input type="file" #filePicker (change)="imagePickerHandler($event)" />
+        <ng-container *ngIf="currentStep === 0">
+            <div style="text-align: center">
+                <button nz-button type="button" (click)="filePicker.click()">Pick the image</button>
+                <input type="file" #filePicker (change)="imagePickerHandler($event)" />
 
-            <div *ngIf="imagePreview !== '' && imagePreview"  class="image-preview">
-                <img [src]="imagePreview" [alt]="registerForm.value.name" />
+                <div>
+                    <div *ngIf="imagePreview !== '' && imagePreview && !imageIsValid" class="image-preview">
+                        <img [src]="imagePreview" [alt]="registerForm.value.name" />
+                    </div>
+
+                    <nz-avatar *ngIf="imageIsValid" style="text-align: center" [nzSize]="90" nzIcon="user"></nz-avatar>
+                </div>
+                <div *ngIf="imageIsValid" style="color: white; margin-top: .6rem">Image uploading is mandatory *.</div>
             </div>
-        </div>
 
-        <div class="input-container">
-            <label>Name:</label>
-            <input nz-input placeholder="name" formControlName="name" />
+            <div class="input-container">
+                <label>Name:</label>
+                <input nz-input placeholder="name" formControlName="name" />
 
-            <div *ngIf="nameIsValid" style="color: orangered">Please enter a name.</div>
-        </div>
+                <div *ngIf="nameIsValid" style="color: orangered">Please enter a name.</div>
+            </div>
 
-        <div class="input-container">
-            <label>Email:</label>
-            <input nz-input placeholder="email" formControlName="email" />
+            <div class="input-container">
+                <label>Email:</label>
+                <input nz-input placeholder="email" formControlName="email" />
 
-            <div *ngIf="emailIsValid" style="color: orangered">Please enter a valid email.</div>
-        </div>
+                <div *ngIf="emailIsValid" style="color: orangered">Please enter a valid email.</div>
+            </div>
 
-        <div class="input-container">
-            <label>Password:</label>
-            <input nz-input placeholder="**********" formControlName="password" [type]="passwordInputType" />
-            <i
-                nz-icon
-                nzTheme="outline"
-                class="suffix-icon"
-                [nzType]="passwordInputType === 'text' ? 'eye-invisible' : 'eye'"
-                (click)="changePasswordInputType(passwordInputType === 'text' ? 'password' : 'text')"
-            ></i>
+            <button class="btn" nz-button nzType="primary" (click)="nextStep()">Next</button>
+        </ng-container>
 
-            <div *ngIf="passwordIsValid" style="color: orangered">Please enter a valid password.</div>
-        </div>
+        <ng-container *ngIf="currentStep === 1">
+            <div class="input-container">
+                <label>Password:</label>
+                <input nz-input placeholder="**********" formControlName="password" [type]="passwordInputType" />
+                <i
+                    nz-icon
+                    nzTheme="outline"
+                    class="suffix-icon"
+                    [nzType]="passwordInputType === 'text' ? 'eye-invisible' : 'eye'"
+                    (click)="changePasswordInputType(passwordInputType === 'text' ? 'password' : 'text')"
+                ></i>
 
-        <div class="input-container">
-            <label>Confirm Password:</label>
-            <input nz-input placeholder="**********" formControlName="confirmPassword" [type]="passwordInputType" />
-            <i
-                nz-icon
-                nzTheme="outline"
-                class="suffix-icon"
-                [nzType]="passwordInputType === 'text' ? 'eye-invisible' : 'eye'"
-                (click)="changePasswordInputType(passwordInputType === 'text' ? 'password' : 'text')"
-            ></i>
+                <div *ngIf="passwordIsValid" style="color: orangered">Please enter a valid password.</div>
+            </div>
 
-            <div *ngIf="isMatch" style="color: orangered">Passwords does not match.</div>
-        </div>
+            <div class="input-container">
+                <label>Confirm Password:</label>
+                <input nz-input placeholder="**********" formControlName="confirmPassword" [type]="passwordInputType" />
+                <i
+                    nz-icon
+                    nzTheme="outline"
+                    class="suffix-icon"
+                    [nzType]="passwordInputType === 'text' ? 'eye-invisible' : 'eye'"
+                    (click)="changePasswordInputType(passwordInputType === 'text' ? 'password' : 'text')"
+                ></i>
 
-        <button class="btn" nz-button nzType="primary" type="submit" [disabled]="registerForm.invalid || isMatch">
-            Sign up
-        </button>
+                <div *ngIf="isMatch" style="color: orangered">Passwords does not match.</div>
+            </div>
+
+            <button
+                *ngIf="currentStep === 1"
+                class="btn"
+                nz-button
+                nzType="primary"
+                type="submit"
+                [disabled]="registerForm.invalid || isMatch"
+            >
+                Signup
+            </button>
+            <button nz-button nzType="link" (click)="previousStep()">Back</button>
+        </ng-container>
     </form>
 </app-auth-layout>

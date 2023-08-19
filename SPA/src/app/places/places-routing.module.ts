@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PlacesComponent } from './places/places.component';
 import { HandlePlaceComponent } from './handle-place/handle-place.component';
-import { PlaceDetailsComponent } from './place-details/place-details.component';
+import { AuthGuard } from '../../shared/guards/auth.guard';
 
 const routes: Routes = [
     { path: '', pathMatch: 'full', redirectTo: 'users' },
@@ -13,10 +13,7 @@ const routes: Routes = [
     {
         path: 'create',
         component: HandlePlaceComponent,
-    },
-    {
-        path: 'details',
-        component: PlaceDetailsComponent,
+        canActivate: [AuthGuard],
     },
 ];
 
