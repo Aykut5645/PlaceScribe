@@ -1,32 +1,27 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { PlaceApiActions } from '../+state/actions';
 import { ActivatedRoute, Params } from '@angular/router';
 import { PlaceDetailsSelector, PlacesListSelector } from '../+state/selectors';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { switchMap, takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-places',
     templateUrl: './places.component.html',
     styleUrls: ['./places.component.scss'],
 })
-export class PlacesComponent implements OnInit {
-    places: Observable<any[]> | undefined;
+export class PlacesComponent implements OnInit, OnDestroy {
+    places: any[];
+    placesLoading: Observable<boolean>;
     userId: string = '';
     isModalOpen: boolean = false;
     isEditModalOpen: boolean = false;
     placeDetails: any;
     form!: FormGroup;
-
-    mapOptions: google.maps.MapOptions = {
-        center: { lat: 40.748817, lng: -73.985428 },
-        zoom: 14,
-    };
-    marker = {
-        position: { lat: 38.9987208, lng: -77.2538699 },
-    };
+    private destroy$ = new Subject<void>();
 
     constructor(
         private store: Store,
@@ -36,12 +31,18 @@ export class PlacesComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.route.params.subscribe((params: Params) => {
-            this.userId = params['userId'];
-        });
-
-        this.store.dispatch(PlaceApiActions.loadPlacesByUserId({ userId: this.userId }));
-        this.places = this.store.select(PlacesListSelector.getPlacesList);
+        this.route.params
+            .pipe(
+                switchMap((params: Params) => {
+                    this.userId = params['userId'];
+                    this.store.dispatch(PlaceApiActions.loadPlacesByUserId({ userId: this.userId }));
+                    return this.store.select(PlacesListSelector.getPlacesList);
+                }),
+                takeUntil(this.destroy$),
+            )
+            .subscribe((places) => {
+                this.places = places;
+            });
     }
 
     openModalHandler(): void {
@@ -50,6 +51,14 @@ export class PlacesComponent implements OnInit {
 
     closeModalHandler(): void {
         this.isModalOpen = false;
+    }
+
+    get titleIsValid() {
+        return this.form.get('title')?.invalid && this.form.get('title')?.touched;
+    }
+
+    get descriptionIsValid() {
+        return this.form.get('description')?.invalid && this.form.get('description')?.touched;
     }
 
     submitHandler(): void {
@@ -69,7 +78,7 @@ export class PlacesComponent implements OnInit {
 
     openEditModalHandler(placeId: string): void {
         this.store.dispatch(PlaceApiActions.loadPlaceDetails({ placeId: placeId }));
-        this.store.select(PlaceDetailsSelector.getPlaceDetails).subscribe(placeDetails => {
+        this.store.select(PlaceDetailsSelector.getPlaceDetails).subscribe((placeDetails) => {
             this.placeDetails = placeDetails;
             this.createForm();
             this.isEditModalOpen = true;
@@ -96,5 +105,9 @@ export class PlacesComponent implements OnInit {
                 [Validators.required, Validators.minLength(6)],
             ],
         });
+    }
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

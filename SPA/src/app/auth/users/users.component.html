@@ -1,20 +1,16 @@
-<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; margin: 4rem">
+<h1 style="color: #2bacff; text-align: center; margin: 4rem 0">Look at our users and see their shared places</h1>
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; margin: 4rem; margin-top: 6rem;">
     <a
-        *ngFor='let user of users | async'
-        style="border: 3px solid #f1cb30; padding: 2rem; display: flex; gap: 3rem"
+        *ngFor="let user of users | async"
+        style="border: 3px solid #2bacff; padding: 2rem; display: flex; gap: 3rem; border-radius: 2rem"
         [routerLink]="['/places/user/' + user.id]"
     >
         <div>
-            <img
-                [src]="'http://localhost:5000/' + user.imageUrl"
-                alt="user"
-                height="120"
-                style="border-radius: 50%"
-            />
+            <img [src]="'http://localhost:5000/' + user.imageUrl" alt="user" height="120" style="border-radius: 50%" />
         </div>
         <div>
-            <div style="color: #f1cb30; font-size: 2rem">{{user.name}}</div>
-            <div style="color: white">{{user.places.length}}</div>
+            <div style="color: #2bacff; font-size: 2rem">{{ user.name }}</div>
+            <div style="color: white">Places {{ user.places.length }}</div>
         </div>
     </a>
 </div>

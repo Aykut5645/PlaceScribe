@@ -38,7 +38,7 @@
         margin: 0;
 
         & span {
-            color: #f1cb30;
+            color: #2bacff;
             font-weight: normal;
             margin-left: 2px;
         }
@@ -63,14 +63,14 @@
 
         &:hover,
         &.active {
-            color: #f1cb30;
+            color: #2bacff;
 
             &::before {
                 content: '';
                 position: absolute;
                 width: 100%;
                 height: 2px;
-                background-color: #f1cb30;
+                background-color: #2bacff;
                 bottom: -4px;
                 transform: scaleX(0);
                 transform-origin: left center;
@@ -84,16 +84,16 @@
     }
 
     &__item--logout {
-        border: 2px solid #f1cb30;
+        border: 2px solid #2bacff;
         padding: .8rem;
         cursor: pointer;
 
         a {
-            color: #f1cb30;
+            color: #2bacff;
         }
 
         &:hover {
-            background-color: #f1cb30;
+            background-color: #2bacff;
 
             a {
                 color: #0B172A;

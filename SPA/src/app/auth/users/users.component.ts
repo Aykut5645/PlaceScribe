@@ -18,6 +18,5 @@ export class UsersComponent implements OnInit {
     ngOnInit(): void {
         this.store.dispatch(AuthApiActions.loadAllUsers());
         this.users = this.store.select(AuthSelectors.getUsersList);
-        this.store.select(AuthSelectors.getUsersList).subscribe(console.log);
     }
 }

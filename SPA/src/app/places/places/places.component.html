@@ -1,7 +1,14 @@
 <div>
+    <nz-spin *ngIf="placesLoading | async" class="spinner-container" nzSimple [nzSize]="'large'"></nz-spin>
     <div
-        *ngFor="let place of places | async"
-        style="max-width: 60rem; margin: auto; border: 3px solid #f1cb30; grid-template-columns: repeat(2, 1fr)"
+        *ngFor="let place of places"
+        style="
+            max-width: 60rem;
+            margin: auto;
+            border: 3px solid #2bacff;
+            grid-template-columns: repeat(2, 1fr);
+            border-radius: 1rem;
+        "
     >
         <div style="height: 35rem">
             <img style="height: 100%; width: 100%" [src]="'http://localhost:5000/' + place.imageUrl" alt="place" />
@@ -23,32 +30,44 @@
         <nz-modal nzTitle="Something" [nzFooter]="null" [(nzVisible)]="isModalOpen" (nzOnCancel)="closeModalHandler()">
             <ng-container *nzModalContent>
                 <div class="my-google-map">
-                    <google-map [options]="mapOptions" width="100%" height="400">
-                        <map-marker [position]="marker.position"></map-marker>
+                    <google-map
+                        [options]="{
+                            center: { lat: place.location.lat, lng: place.location.lng },
+                            zoom: 14
+                        }"
+                        width="100%"
+                        height="400"
+                    >
+                        <map-marker [position]="place.location"></map-marker>
                     </google-map>
                 </div>
                 <button nz-button nzType="default" type="button" (click)="closeModalHandler()">Затвори</button>
             </ng-container>
         </nz-modal>
 
-<!--        <app-place-edit [isEditModalOpen]="isEditModalOpen" [placeDetails]="placeDetails | async"></app-place-edit>-->
-        <nz-modal nzTitle="Edit place" [nzFooter]="null" [(nzVisible)]="isEditModalOpen" (nzOnCancel)="closeEditModalHandler()">
+        <!--        <app-place-edit [isEditModalOpen]="isEditModalOpen" [placeDetails]="placeDetails | async"></app-place-edit>-->
+        <nz-modal
+            nzTitle="Edit place"
+            [nzFooter]="null"
+            [(nzVisible)]="isEditModalOpen"
+            (nzOnCancel)="closeEditModalHandler()"
+        >
             <ng-container *nzModalContent>
                 <form [formGroup]="form" (ngSubmit)="submitHandler()">
                     <div class="input-container">
                         <label>Title:</label>
                         <input nz-input placeholder="Title" formControlName="title" />
 
-<!--                        <div *ngIf="titleIsValid" style="color: orangered">Please enter a title.</div>-->
+                        <div *ngIf="titleIsValid" style="color: orangered">Please enter a title.</div>
                     </div>
 
                     <div class="input-container">
                         <label>Description:</label>
                         <textarea rows="4" nz-input placeholder="Description" formControlName="description"></textarea>
 
-<!--                        <div *ngIf="descriptionIsValid" style="color: orangered">-->
-<!--                            Description must be at least 6 characters long.-->
-<!--                        </div>-->
+                        <div *ngIf="descriptionIsValid" style="color: orangered">
+                            Description must be at least 6 characters long.
+                        </div>
                     </div>
                     <button nz-button nzType="default" type="button" (click)="closeEditModalHandler()">Close</button>
                     <button nz-button nzType="primary" type="submit" [disabled]="form.invalid">Edit Place</button>

@@ -12,5 +12,18 @@ html {
 
 .container-primary {
     min-height: 100vh;
-    background-color: #0B172A;
+    background-image: linear-gradient(
+            to right bottom,
+            rgb(12, 38, 89),
+            rgba(11, 21, 40, 0.8)),
+    url('./assets/nat-6.jpg');
+    background-size: cover;
+    background-position: top;
+}
+
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15rem;
 }
