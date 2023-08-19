@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 import { AuthApiActions, AuthUiActions } from '../actions';
 import { AuthService } from '../../../services/auth.service';
@@ -27,11 +27,11 @@ export class AuthEffects {
                         return of(
                             AuthUiActions.loadAllUsersFail({
                                 error,
-                            })
+                            }),
                         );
-                    })
-                )
-            )
+                    }),
+                ),
+            ),
         );
     });
 
@@ -40,8 +40,11 @@ export class AuthEffects {
             ofType(AuthApiActions.login),
             switchMap((_) => {
                 return this.authService.login({ email: _.email, password: _.password }).pipe(
-                    map((userData) => {
-                        return AuthUiActions.loginSuccess(userData);
+                    map((loginResData) => {
+                        this.authService.setToken(loginResData.token);
+                        this.authService.setUser({ userId: loginResData.userId, email: loginResData.email });
+
+                        return AuthUiActions.loginSuccess(loginResData);
                     }),
                     catchError((error) => {
                         return of(
