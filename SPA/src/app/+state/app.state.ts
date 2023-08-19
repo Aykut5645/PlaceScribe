@@ -9,13 +9,21 @@ export interface State {
 
 // Current User
 export interface CurrentUserState {
-    user: {};
+    user: {
+        email: string;
+        userId: string;
+        token: string;
+    };
     error: string;
     loading: boolean;
 }
 
 export const initialCurrentUserState: CurrentUserState = {
-    user: {},
+    user: {
+        email: '',
+        userId: '',
+        token: '',
+    },
     error: '',
     loading: false,
 };

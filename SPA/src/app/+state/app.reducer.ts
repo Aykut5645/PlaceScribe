@@ -22,7 +22,11 @@ export const currentUserReducer = createReducer<State.CurrentUserState>(
     on(AuthUiActions.loginFail, (state, { error }): State.CurrentUserState => {
         return {
             ...state,
-            user: {},
+            user: {
+                email: '',
+                token: '',
+                userId: '',
+            },
             loading: false,
             error: error.message,
         };
@@ -30,7 +34,11 @@ export const currentUserReducer = createReducer<State.CurrentUserState>(
     on(AuthUiActions.logoutSuccess, (state): State.CurrentUserState => {
         return {
             ...state,
-            user: {},
+            user: {
+                email: '',
+                token: '',
+                userId: '',
+            },
             loading: false,
             error: '',
         };

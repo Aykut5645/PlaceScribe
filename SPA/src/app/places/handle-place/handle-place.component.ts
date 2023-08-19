@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { PlaceApiActions } from '../+state/actions';
 import { mimeType } from '../../../shared/validators/mime-type.validator';
+import { Observable } from 'rxjs';
+import { CurrentUserSelectors } from '../../+state/selectors';
 
 @Component({
     selector: 'app-handle-place',
@@ -13,6 +15,7 @@ export class HandlePlaceComponent implements OnInit {
     placeForm!: FormGroup;
     @Input() isEditMode: boolean = false;
     imagePreview: string = '';
+    currentUserId: string;
 
     constructor(
         private fb: FormBuilder,
@@ -21,6 +24,9 @@ export class HandlePlaceComponent implements OnInit {
 
     ngOnInit(): void {
         this.createForm();
+        this.store.select(CurrentUserSelectors.getCurrentUserId).subscribe((userId) => {
+            this.currentUserId = userId;
+        });
     }
 
     imagePickerHandler(event: Event): void {
@@ -56,7 +62,7 @@ export class HandlePlaceComponent implements OnInit {
             PlaceApiActions.createPlace({
                 createdPlace: {
                     ...this.placeForm.value,
-                    creator: '64df7a6a1df3f6dc78cc15b9',
+                    creator: this.currentUserId,
                 },
             }),
         );
