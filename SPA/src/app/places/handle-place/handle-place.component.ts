@@ -1,10 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { PlaceApiActions } from '../+state/actions';
 import { mimeType } from '../../../shared/validators/mime-type.validator';
-import { Observable } from 'rxjs';
 import { CurrentUserSelectors } from '../../+state/selectors';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-handle-place',

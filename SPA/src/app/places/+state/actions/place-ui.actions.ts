@@ -22,7 +22,7 @@ export const loadPlaceDetailsSuccess = createAction('[Place UI] Load place detai
 
 export const loadPlaceDetailsFail = createAction('[Place UI] Load place details error', props<any>());
 
-export const createPlaceSuccess = createAction('[Place UI] Create place success', props<{ message: string }>());
+export const createPlaceSuccess = createAction('[Place UI] Create place success', props<{ message: string, userId: string }>());
 
 export const createPlaceFail = createAction('[Place UI] Create place fail', props<any>());
 

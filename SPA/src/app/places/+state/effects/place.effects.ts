@@ -6,6 +6,7 @@ import { catchError, of, switchMap } from 'rxjs';
 
 import { PlaceApiActions, PlaceUiActions } from '../actions';
 import { PlaceService } from '../../../../shared/services/place.service';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class PlaceEffects {
@@ -61,8 +62,14 @@ export class PlaceEffects {
             ofType(PlaceApiActions.createPlace),
             switchMap((_) => {
                 return this.placeService.createPlace(_.createdPlace).pipe(
-                    switchMap((successObject) => {
-                        return [PlaceUiActions.createPlaceSuccess(successObject)];
+                    switchMap((resObj) => {
+                        return [
+                            PlaceUiActions.createPlaceSuccess(resObj),
+                            PlaceApiActions.loadPlacesByUserId({ userId: resObj.userId }),
+                        ];
+                    }),
+                    tap((_) => {
+                        this.router.navigate([`/places/user/${_.userId}`]);
                     }),
                     catchError((error) =>
                         of(
