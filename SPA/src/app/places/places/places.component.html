@@ -1,4 +1,4 @@
-<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin: 2rem; justify-items: center">
+<div style="display: grid; gap: 2rem; margin: 2rem; justify-items: center" [ngStyle]="getGridStyle()">
     <nz-spin *ngIf="placesLoading | async" class="spinner-container" nzSimple [nzSize]="'large'"></nz-spin>
     <div
         *ngFor="let place of places"
@@ -10,10 +10,9 @@
 
         <div style="padding: 2rem">
             <div>
-                <h1 style="margin: 0">{{ place.title }}</h1>
-                <h2>{{ place.address }}</h2>
-                <div>{{ place.description }}</div>
-                <div>{{currentUserId | async}}</div>
+                <h1 style="margin: 0; color: #2bacff">{{ place.title }}</h1>
+                <h2 style="color: white">{{ place.address }}</h2>
+                <div style="color: white">{{ place.description }}</div>
             </div>
             <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem">
                 <button nz-button nzType="primary" (click)="openModalHandler(place.id)">VIEW ON MAP</button>
@@ -24,7 +23,7 @@
             </div>
         </div>
 
-        <nz-modal nzTitle="Something" [nzFooter]="null" [(nzVisible)]="isModalOpen" (nzOnCancel)="closeModalHandler()">
+        <nz-modal nzTitle="View Place on Map" [nzFooter]="null" [(nzVisible)]="isModalOpen" (nzOnCancel)="closeModalHandler()">
             <ng-container *nzModalContent>
                 <div class="my-google-map">
                     <google-map
@@ -42,7 +41,6 @@
             </ng-container>
         </nz-modal>
 
-        <!--        <app-place-edit [isEditModalOpen]="isEditModalOpen" [placeDetails]="placeDetails | async"></app-place-edit>-->
         <nz-modal
             nzTitle="Edit place"
             [nzFooter]="null"

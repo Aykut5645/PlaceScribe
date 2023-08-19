@@ -23,6 +23,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
     placeDetails: any;
     form!: FormGroup;
     currentUserId: Observable<string>;
+    numberOfElements: number = 1;
     private destroy$ = new Subject<void>();
 
     constructor(
@@ -46,6 +47,14 @@ export class PlacesComponent implements OnInit, OnDestroy {
             .subscribe((places) => {
                 this.places = places;
             });
+    }
+
+    getGridStyle() {
+        if (this.places.length === 1) {
+            return { 'grid-template-columns': '1fr', 'justify-content': 'center' };
+        } else {
+            return { 'grid-template-columns': '1fr 1fr' };
+        }
     }
 
     openModalHandler(placeId: string): void {
