@@ -1,7 +1,20 @@
+<h1 *ngIf="[].length === 0" style="color: #2bacff; text-align: center; margin-top: 14rem">
+    There are no created place yet.
+</h1>
+<div
+    style="display: flex; flex-direction: column; align-items: center"
+    *ngIf="[].length === 0 && (currentUserId | async) === userId"
+>
+    <h2 *ngIf="[].length === 0 && (currentUserId | async) === userId" style="color: #2bacff; text-align: center">
+        Maybe create one.
+    </h2>
+    <button nz-button nzType="primary" [routerLink]="['/places/create']">Share place</button>
+</div>
+
 <div style="display: grid; gap: 2rem; margin: 2rem; justify-items: center" [ngStyle]="getGridStyle()">
     <nz-spin *ngIf="placesLoading | async" class="spinner-container" nzSimple [nzSize]="'large'"></nz-spin>
     <div
-        *ngFor="let place of places"
+        *ngFor="let place of []"
         style="border: 3px solid #2bacff; grid-template-columns: repeat(2, 1fr); border-radius: 1rem; max-width: 60rem"
     >
         <div style="height: 35rem">
@@ -23,7 +36,12 @@
             </div>
         </div>
 
-        <nz-modal nzTitle="View Place on Map" [nzFooter]="null" [(nzVisible)]="isModalOpen" (nzOnCancel)="closeModalHandler()">
+        <nz-modal
+            nzTitle="View Place on Map"
+            [nzFooter]="null"
+            [(nzVisible)]="isModalOpen"
+            (nzOnCancel)="closeModalHandler()"
+        >
             <ng-container *nzModalContent>
                 <div class="my-google-map">
                     <google-map

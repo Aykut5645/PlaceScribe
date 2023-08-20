@@ -23,7 +23,6 @@ export class PlacesComponent implements OnInit, OnDestroy {
     placeDetails: any;
     form!: FormGroup;
     currentUserId: Observable<string>;
-    numberOfElements: number = 1;
     private destroy$ = new Subject<void>();
 
     constructor(
