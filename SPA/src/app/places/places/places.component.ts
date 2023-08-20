@@ -39,6 +39,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
                     this.userId = params['userId'];
                     this.store.dispatch(PlaceApiActions.loadPlacesByUserId({ userId: this.userId }));
                     this.currentUserId = this.store.select(CurrentUserSelectors.getCurrentUserId);
+                    this.placesLoading = this.store.select(PlacesListSelector.getPlacesListLoading);
                     return this.store.select(PlacesListSelector.getPlacesList);
                 }),
                 takeUntil(this.destroy$),
