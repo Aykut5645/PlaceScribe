@@ -1,98 +1,51 @@
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { PlaceApiActions } from '../+state/actions';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { PlaceDetailsSelector, PlacesListSelector } from '../+state/selectors';
-import { Observable, Subject } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { switchMap, takeUntil } from 'rxjs/operators';
+
+import { PlaceApiActions } from '../+state/actions';
 import { CurrentUserSelectors } from '../../+state/selectors';
+import { PlaceDetailsSelector, PlacesListSelector } from '../+state/selectors';
+import { ModalTypesEnum } from '../../../shared/enums/modal-types';
 
 @Component({
     selector: 'app-places',
     templateUrl: './places.component.html',
     styleUrls: ['./places.component.scss'],
 })
-export class PlacesComponent implements OnInit, OnDestroy {
-    places: any[];
+export class PlacesComponent implements OnInit {
+    places: Observable<any[]>;
     placesLoading: Observable<boolean>;
-    userId: string = '';
-    isModalOpen: boolean = false;
-    isEditModalOpen: boolean = false;
-    placeDetails: any;
-    form!: FormGroup;
     currentUserId: Observable<string>;
-    currentPlaceId: string;
-    private destroy$ = new Subject<void>();
+    currentPlaceDetails$: Observable<any>;
+
+    userId: string;
+    isMapModalOpen: { isOpen: boolean } = { isOpen: false };
+    isEditModalOpen: { isOpen: boolean } = { isOpen: false };
+    modalTypes = ModalTypesEnum;
 
     constructor(
         private store: Store,
         private route: ActivatedRoute,
         private modalService: NzModalService,
-        private fb: FormBuilder,
     ) {}
 
     ngOnInit(): void {
-        this.route.params
-            .pipe(
-                switchMap((params: Params) => {
-                    this.userId = params['userId'];
-                    this.store.dispatch(PlaceApiActions.loadPlacesByUserId({ userId: this.userId }));
-                    this.currentUserId = this.store.select(CurrentUserSelectors.getCurrentUserId);
-                    this.placesLoading = this.store.select(PlacesListSelector.getPlacesListLoading);
-                    return this.store.select(PlacesListSelector.getPlacesList);
-                }),
-                takeUntil(this.destroy$),
-            )
-            .subscribe((places) => {
-                this.places = places;
-            });
-    }
-
-    getGridStyle() {
-        if (this.places.length === 1) {
-            return { 'grid-template-columns': '1fr', 'justify-content': 'center' };
-        } else {
-            return { 'grid-template-columns': '1fr 1fr' };
-        }
-    }
-
-    openModalHandler(placeId: string): void {
-        this.currentPlaceId = placeId;
-        this.isModalOpen = !this.isModalOpen;
-    }
-
-    get titleIsValid() {
-        return this.form.get('title')?.invalid && this.form.get('title')?.touched;
-    }
-
-    get descriptionIsValid() {
-        return this.form.get('description')?.invalid && this.form.get('description')?.touched;
-    }
-
-    submitHandler(): void {
-        this.store.dispatch(
-            PlaceApiActions.updatePlace({
-                placeId: this.placeDetails?.id,
-                creatorId: this.placeDetails?.creator,
-                place: { ...this.form.value },
-            }),
-        );
-        this.closeEditModalHandler();
-    }
-
-    closeEditModalHandler(): void {
-        this.isEditModalOpen = true;
-    }
-
-    openEditModalHandler(placeId: string): void {
-        this.store.dispatch(PlaceApiActions.loadPlaceDetails({ placeId: placeId }));
-        this.store.select(PlaceDetailsSelector.getPlaceDetails).subscribe((placeDetails) => {
-            this.placeDetails = placeDetails;
-            this.createForm();
+        this.route.params.subscribe((params: Params) => {
+            if (params['userId']) {
+                this.userId = params['userId'];
+                this.store.dispatch(PlaceApiActions.loadPlacesByUserId({ userId: this.userId }));
+            }
         });
-        this.isEditModalOpen = true;
+        this.getData();
+    }
+
+    openModalHandler(modalInfo: { type: string, placeId: string }): void {
+        modalInfo.type === this.modalTypes.EDIT
+            ? this.isEditModalOpen = { isOpen: true }
+            : this.isMapModalOpen = { isOpen: true };
+        this.loadAndGetPlaceDetails(modalInfo.placeId);
     }
 
     showDeleteHandler(placeId: string): void {
@@ -107,17 +60,14 @@ export class PlacesComponent implements OnInit, OnDestroy {
         });
     }
 
-    createForm(): void {
-        this.form = this.fb.group({
-            title: [this.placeDetails ? this.placeDetails.title : null, [Validators.required]],
-            description: [
-                this.placeDetails ? this.placeDetails.description : null,
-                [Validators.required, Validators.minLength(6)],
-            ],
-        });
+    loadAndGetPlaceDetails(placeId: string): void {
+        this.store.dispatch(PlaceApiActions.loadPlaceDetails({ placeId: placeId }));
+        this.currentPlaceDetails$ = this.store.select(PlaceDetailsSelector.getPlaceDetails);
     }
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
+
+    getData(): void {
+        this.places = this.store.select(PlacesListSelector.getPlacesList);
+        this.currentUserId = this.store.select(CurrentUserSelectors.getCurrentUserId);
+        this.placesLoading = this.store.select(PlacesListSelector.getPlacesListLoading);
     }
 }

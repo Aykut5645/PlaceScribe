@@ -1,27 +1,20 @@
 <h1
-    *ngIf="places.length === 0 && (placesLoading | async) === false"
+    *ngIf="(places | async).length === 0 && (placesLoading | async) === false"
     style="color: #2bacff; text-align: center; margin-top: 14rem"
 >
     There are no created places yet.
 </h1>
 <div
     style="display: flex; flex-direction: column; align-items: center"
-    *ngIf="places.length === 0 && (currentUserId | async) === userId && (placesLoading | async) === false"
+    *ngIf="(places | async).length === 0 && (currentUserId | async) === userId && (placesLoading | async) === false"
 >
     <h2 style="color: #2bacff; text-align: center">Maybe create one.</h2>
     <button nz-button nzType="primary" [routerLink]="['/places/create']">Share place</button>
 </div>
 <nz-spin *ngIf="placesLoading | async" class="spinner-container" nzSimple [nzSize]="'large'"></nz-spin>
 
-<div
-    *ngIf="(placesLoading | async) === false"
-    style="display: grid; gap: 2rem; margin: 2rem; justify-items: center"
-    [ngStyle]="getGridStyle()"
->
-    <div
-        *ngFor="let place of places"
-        class="place"
-    >
+<div *ngIf="(placesLoading | async) === false" style="display: grid; gap: 2rem; margin: 2rem; justify-items: center">
+    <div *ngFor="let place of places | async" class="place">
         <div>
             <div style="height: 35rem">
                 <img
@@ -38,42 +31,22 @@
         </div>
 
         <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; padding-bottom: 2rem">
-            <button nz-button nzType="primary" (click)="openModalHandler(place.id)">VIEW ON MAP</button>
+            <button nz-button nzType="primary" (click)="openModalHandler({ type: modalTypes.MAP, placeId: place.id })">
+                VIEW ON MAP
+            </button>
             <ng-container *ngIf="(currentUserId | async) === userId">
-                <button nz-button nzType="primary" (click)="openEditModalHandler(place.id)">EDIT</button>
+                <button
+                    nz-button
+                    nzType="primary"
+                    (click)="openModalHandler({ type: modalTypes.EDIT, placeId: place.id })"
+                >
+                    EDIT
+                </button>
                 <button nz-button nzType="primary" (click)="showDeleteHandler(place.id)">DELETE</button>
             </ng-container>
         </div>
-
-        <nz-modal
-            nzTitle="Edit place"
-            [nzFooter]="null"
-            [(nzVisible)]="isEditModalOpen"
-            (nzOnCancel)="closeEditModalHandler()"
-        >
-            <ng-container *nzModalContent>
-                <form [formGroup]="form" (ngSubmit)="submitHandler()">
-                    <div class="input-container">
-                        <label>Title:</label>
-                        <input nz-input placeholder="Title" formControlName="title" />
-
-                        <div *ngIf="titleIsValid" style="color: orangered">Please enter a title.</div>
-                    </div>
-
-                    <div class="input-container">
-                        <label>Description:</label>
-                        <textarea rows="4" nz-input placeholder="Description" formControlName="description"></textarea>
-
-                        <div *ngIf="descriptionIsValid" style="color: orangered">
-                            Description must be at least 6 characters long.
-                        </div>
-                    </div>
-                    <button nz-button nzType="default" type="button" (click)="closeEditModalHandler()">Close</button>
-                    <button nz-button nzType="primary" type="submit" [disabled]="form.invalid">Edit Place</button>
-                </form>
-            </ng-container>
-        </nz-modal>
     </div>
 </div>
 
-<app-map-modal *ngIf="currentPlaceId" [isOpen]="isModalOpen" [placeId]="currentPlaceId"></app-map-modal>
+<app-map-modal [modal]="isMapModalOpen" [placeDetails]="currentPlaceDetails$ | async"></app-map-modal>
+<app-edit-modal [modal]="isEditModalOpen" [placeDetails]="currentPlaceDetails$ | async"></app-edit-modal>

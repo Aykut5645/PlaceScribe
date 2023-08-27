@@ -1,0 +1,28 @@
+<nz-modal
+    nzTitle="Edit place"
+    [nzFooter]="null"
+    [(nzVisible)]="modal.isOpen"
+    (nzOnCancel)="closeModalHandler()"
+>
+    <ng-container *nzModalContent>
+        <form [formGroup]="form" (ngSubmit)="submitHandler()">
+            <div class="input-container">
+                <label>Title:</label>
+                <input nz-input placeholder="Title" formControlName="title" />
+
+                <div *ngIf="titleIsValid" style="color: orangered">Please enter a title.</div>
+            </div>
+
+            <div class="input-container">
+                <label>Description:</label>
+                <textarea rows="4" nz-input placeholder="Description" formControlName="description"></textarea>
+
+                <div *ngIf="descriptionIsValid" style="color: orangered">
+                    Description must be at least 6 characters long.
+                </div>
+            </div>
+            <button nz-button nzType="default" type="button" (click)="closeModalHandler()">Close</button>
+            <button nz-button nzType="primary" type="submit" [disabled]="form.invalid">Edit Place</button>
+        </form>
+    </ng-container>
+</nz-modal>
