@@ -20,3 +20,15 @@ export class UsersComponent implements OnInit {
         this.users = this.store.select(AuthSelectors.getUsersList);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

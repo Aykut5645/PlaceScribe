@@ -19,6 +19,7 @@ export class LoginRegisterGuard implements CanActivate {
             this.router.navigate([`/auth/users`]);
             return false;
         }
+
         return true;
     }
 }

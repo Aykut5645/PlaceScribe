@@ -23,6 +23,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
     placeDetails: any;
     form!: FormGroup;
     currentUserId: Observable<string>;
+    currentPlaceId: string;
     private destroy$ = new Subject<void>();
 
     constructor(
@@ -58,15 +59,8 @@ export class PlacesComponent implements OnInit, OnDestroy {
     }
 
     openModalHandler(placeId: string): void {
-        this.store.dispatch(PlaceApiActions.loadPlaceDetails({ placeId: placeId }));
-        this.store.select(PlaceDetailsSelector.getPlaceDetails).subscribe((placeDetails) => {
-            this.placeDetails = placeDetails;
-        });
-        this.isModalOpen = true;
-    }
-
-    closeModalHandler(): void {
-        this.isModalOpen = false;
+        this.currentPlaceId = placeId;
+        this.isModalOpen = !this.isModalOpen;
     }
 
     get titleIsValid() {
@@ -89,7 +83,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
     }
 
     closeEditModalHandler(): void {
-        this.isEditModalOpen = !this.isEditModalOpen;
+        this.isEditModalOpen = true;
     }
 
     openEditModalHandler(placeId: string): void {

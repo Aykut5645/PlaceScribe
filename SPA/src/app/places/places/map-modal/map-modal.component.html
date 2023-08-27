@@ -1,0 +1,20 @@
+<nz-modal nzTitle="View Place on Map" [nzFooter]="null" [nzVisible]="isOpen" (nzOnCancel)="closeModalHandler()">
+    <ng-container *nzModalContent>
+        <div class="my-google-map">
+            <google-map
+                [options]="{
+                    center: {
+                        lat: (placeDetails | async)?.location?.lat || 0,
+                        lng: (placeDetails | async)?.location?.lng || 0
+                    },
+                    zoom: 14
+                }"
+                width="100%"
+                height="400"
+            >
+                <map-marker [position]="(placeDetails | async)?.location"></map-marker>
+            </google-map>
+        </div>
+        <button nz-button nzType="default" type="button" (click)="closeModalHandler()">Затвори</button>
+    </ng-container>
+</nz-modal>

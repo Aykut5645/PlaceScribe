@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -26,9 +26,7 @@ export class PlaceService {
         formData.append('address', place.address);
         formData.append('creator', place.creator);
         formData.append('image', place.image);
-        // const headers = new HttpHeaders().set('Authorization',
-            // 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VkSWQiOiI2NGRkMGJmOGJlYTUxNzM3NGFkNThkYmMiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2OTIyNzY2NzksImV4cCI6MTY5MjI4MDI3OX0.d0siXWpZhUebdUEVHNGE9B1v5jkJFySxyOPhlWLdssE');
-        // return this.http.post<any>(`${this.baseUrl}`, place, { headers });
+        
         return this.http.post<any>(`${this.baseUrl}`, formData);
     }
 

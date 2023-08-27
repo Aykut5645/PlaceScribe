@@ -1,0 +1,11 @@
+.user {
+    border: 3px solid #2bacff;
+    padding: 2rem;
+    display: flex;
+    gap: 3rem;
+    border-radius: 2rem;
+
+    &:hover {
+        transform: scale(1.04);
+    }
+}

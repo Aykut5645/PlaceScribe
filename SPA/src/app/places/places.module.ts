@@ -16,9 +16,10 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzImageModule } from 'ng-zorro-antd/image';
+import { MapModalComponent } from './places/map-modal/map-modal.component';
 
 @NgModule({
-    declarations: [PlacesComponent, HandlePlaceComponent],
+    declarations: [PlacesComponent, HandlePlaceComponent, MapModalComponent],
     imports: [
         CommonModule,
         PlacesRoutingModule,

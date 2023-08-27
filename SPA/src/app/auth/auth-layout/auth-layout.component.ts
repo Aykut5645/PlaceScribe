@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 @Component({
     selector: 'app-auth-layout',
@@ -10,5 +10,6 @@ export class AuthLayoutComponent implements OnInit {
     @Input() heading?: string;
     constructor() {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+    }
 }
