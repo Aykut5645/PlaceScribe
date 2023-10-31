@@ -11,12 +11,12 @@
     <h2 style="color: #2bacff; text-align: center">Maybe create one.</h2>
     <button nz-button nzType="primary" [routerLink]="['/places/create']">Share place</button>
 </div>
-<nz-spin *ngIf="placesLoading | async" class="spinner-container" nzSimple [nzSize]="'large'"></nz-spin>
+<nz-spin *ngIf="placesLoading | async" class="spinner-container" nzSimple nzSize="large"></nz-spin>
 
-<div *ngIf="(placesLoading | async) === false" style="display: grid; gap: 2rem; margin: 2rem; justify-items: center">
+<div *ngIf="(placesLoading | async) === false" class="places">
     <div *ngFor="let place of places | async" class="place">
         <div>
-            <div style="height: 35rem">
+            <div style="height: 40rem">
                 <img
                     style="height: 100%; width: 100%; border-top-left-radius: 1rem; border-top-right-radius: 1rem"
                     [src]="'http://localhost:5000/' + place.imageUrl"

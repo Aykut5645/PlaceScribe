@@ -1,18 +1,31 @@
 .my-google-map-container {
-    height: 100%; /* Adjust the height as needed */
-    max-width: 100%; /* Ensure the map doesn't exceed the modal's width */
+    height: 100%;
+    max-width: 100%;
 }
 
 .map-container {
     height: 20rem !important;
 }
 
-.place {
-    border: 3px solid #2bacff;
+.places {
+    margin: 3rem;
+    display: grid;
+    justify-content: center;
     grid-template-columns: repeat(2, 1fr);
-    border-radius: 1rem;
-    max-width: 60rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    gap: 3rem;
+
+    .place {
+        border: 3px solid #2bacff;
+        border-radius: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        // &.last-place {
+        //     justify-self: center;
+        //     width: calc(100% - (100% / 2));
+        //     grid-column-start: span 2;
+        // }
+    }
 }
+
