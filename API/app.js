@@ -41,6 +41,9 @@ app.use((error, req, res, next) => {
     });
 });
 
+app.use("/", express.static(path.join(__dirname, "/dist/spa")));
+app.use((req, res, next) => res.sendFile(path.join(__dirname, "/dist/spa/index.html")));
+
 connect(process.env.MONGO_CONNECTION_STRING)
     .then(() => {
         app.listen(
