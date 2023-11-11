@@ -3,17 +3,15 @@ const { connect } = require("mongoose");
 
 const fs = require('fs');
 const path = require('path');
-require('dotenv').config();
+const { mongoUri, port } = require('./config');
 
 const usersRoutes = require('./routes/users-routes');
 const placesRoutes = require('./routes/places-routes');
 const HttpError = require('./models/Http-error');
-const PORT = 5000;
 
 const app = express();
 
 app.use(express.json());
-
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 app.use((req, res, next) => {
@@ -28,7 +26,6 @@ app.use('/api/users', usersRoutes);
 app.use('/api/places', placesRoutes);
 
 app.use((req, res) => {
-    // Error can be thrown in case of synchronous code, upon asynchronous - next()!!!
     throw new HttpError('Could not find this route.', 404);
 });
 app.use((error, req, res, next) => {
@@ -41,14 +38,11 @@ app.use((error, req, res, next) => {
     });
 });
 
-app.use("/", express.static(path.join(__dirname, "/dist/spa")));
-app.use((req, res, next) => res.sendFile(path.join(__dirname, "/dist/spa/index.html")));
-
-connect(process.env.MONGO_CONNECTION_STRING)
+connect(mongoUri)
     .then(() => {
         app.listen(
-            PORT,
-            () => console.log(`Server is listening on port ${PORT}...`)
+            port,
+            () => console.log(`Server is listening on port ${port}...`)
         );
     })
     .catch((err) => console.log('Database connection error => ', err));

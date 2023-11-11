@@ -1,4 +1,6 @@
 const { verify } = require("jsonwebtoken");
+
+const { jwtKey } = require('../config');
 const HttpError = require("../models/Http-error");
 
 module.exports = (req, res, next) => {
@@ -8,7 +10,7 @@ module.exports = (req, res, next) => {
             throw new Error('Authentication failed.');
         }
 
-        const decodedToken = verify(token, process.env.JWT_PRIVATE_KEY);
+        const decodedToken = verify(token, jwtKey);
         req.userData = { userId: decodedToken.userId };
         next();
     } catch(err) {

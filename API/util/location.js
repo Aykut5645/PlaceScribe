@@ -1,9 +1,10 @@
 const axios = require("axios");
 
+const { apiKey } = require('../config');
 const HttpError = require("../models/Http-error");
 
 const getCoordsForAddress = async (address) => {
-    const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${process.env.API_KEY}`);
+    const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`);
 
     if (data?.status === 'ZERO_RESULTS') {
         throw new HttpError(
